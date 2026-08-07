@@ -7,26 +7,70 @@
       "description": "Traditional Ethiopian dishes served on our signature homemade injera",
       "items": [
         {
-          "id": "tibs",
-          "name": "Tibs",
-          "nameAmharic": "ጥብስ",
-          "description": "Fried meat served with chili powder and home made injera",
-          "price": 45,
+          "id": "love-grass-special",
+          "name": "Love Grass Special",
+          "nameAmharic": "ላቭ ግራስ ስፔሻል",
+          "description": "Fried meat, Kitfo (raw meat mixed with butter), Ethiopian cheese, served with homemade injera",
+          "price": 75,
           "currency": "AED",
-          "image": "tibs.jpg",
+          "image": "love-grass-special.png",
           "tags": ["signature", "popular"],
           "dietary": []
         },
         {
-          "id": "kitfo",
-          "name": "Kitfo",
-          "nameAmharic": "ክትፎ",
-          "description": "Ethiopian steak tartare seasoned with mitmita spice and niter kibbeh butter",
+          "id": "special-kitfo",
+          "name": "Special Kitfo",
+          "nameAmharic": "ስፔሻል ክትፎ",
+          "description": "Chopped raw meat mixed with butter, chopped cabbage, Ethiopian cheese, served with chili powder, homemade injera and kocho",
+          "price": 50,
+          "currency": "AED",
+          "image": "special-kitfo.png",
+          "tags": ["signature", "popular"],
+          "dietary": ["gluten-free"]
+        },
+        {
+          "id": "maheberawi",
+          "name": "Maheberawi",
+          "nameAmharic": "ማህበራዊ",
+          "description": "Cooked meat served with homemade cheese, cabbage with meat, and homemade injera",
           "price": 55,
           "currency": "AED",
-          "image": "kitfo.jpg",
+          "image": "maheberawi.png",
+          "tags": ["signature", "popular"],
+          "dietary": []
+        },
+        {
+          "id": "derek-tibs",
+          "name": "Derek Tibs",
+          "nameAmharic": "ደረቅ ጥብስ",
+          "description": "Dry fried meat served with chili powder and homemade injera",
+          "price": 50,
+          "currency": "AED",
+          "image": "derek-tibs.png",
+          "tags": ["signature", "popular"],
+          "dietary": []
+        },
+        {
+          "id": "teff-cake",
+          "name": "Teff Cake 1kg",
+          "nameAmharic": "የጤፍ ኬክ 1k.g",
+          "description": "Artisanal teff cake (1kg), wholesome, rich in protein and gluten-free",
+          "price": 150,
+          "currency": "AED",
+          "image": "teff-cake.png",
           "tags": ["signature"],
-          "dietary": ["gluten-free"]
+          "dietary": ["gluten-free", "vegetarian"]
+        },
+        {
+          "id": "teff-berry-delight",
+          "name": "Teff Berry Delight",
+          "nameAmharic": "ጤፍ ቤሪ ዲላይት",
+          "description": "Fluffy teff-based cake paired with colorful fruits, offering a perfectly balanced, refreshing sweetness",
+          "price": 45,
+          "currency": "AED",
+          "image": "teff-berry-delight.png",
+          "tags": ["signature", "popular"],
+          "dietary": ["vegetarian"]
         },
         {
           "id": "doro-wot",
