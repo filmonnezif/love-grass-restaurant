@@ -1472,8 +1472,9 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
     const pixelsPerSecond = 36;
     let direction = 1;
     let position = rail.scrollLeft;
-    let manuallyPaused = false;
+    let interactionPaused = false;
     let animationFrame: number | undefined;
+    let resumeTimer: number | undefined;
     let previousTime: number | undefined;
 
     const stopAnimation = () => {
@@ -1484,7 +1485,7 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
     };
 
     const animate = (time: number) => {
-      if (manuallyPaused || reduceMotion.matches) {
+      if (interactionPaused || reduceMotion.matches) {
         stopAnimation();
         return;
       }
@@ -1508,21 +1509,40 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
 
     const startAnimation = () => {
       stopAnimation();
-      if (manuallyPaused || reduceMotion.matches || document.hidden) return;
+      if (interactionPaused || reduceMotion.matches || document.hidden) return;
+      position = rail.scrollLeft;
       rail.classList.add('is-autoplaying');
       animationFrame = window.requestAnimationFrame(animate);
     };
 
-    const pauseAfterInteraction = () => {
-      manuallyPaused = true;
+    const pauseForInteraction = () => {
+      window.clearTimeout(resumeTimer);
+      interactionPaused = true;
       stopAnimation();
     };
 
-    rail.addEventListener('pointerdown', pauseAfterInteraction, { passive: true });
-    rail.addEventListener('wheel', pauseAfterInteraction, { passive: true });
+    const resumeAfterInteraction = (delay = 400) => {
+      window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(() => {
+        interactionPaused = false;
+        startAnimation();
+      }, delay);
+    };
+
+    rail.addEventListener('pointerdown', pauseForInteraction, { passive: true });
+    window.addEventListener('pointerup', () => resumeAfterInteraction(), { passive: true });
+    window.addEventListener('pointercancel', () => resumeAfterInteraction(), { passive: true });
+    rail.addEventListener('wheel', () => {
+      pauseForInteraction();
+      resumeAfterInteraction(700);
+    }, { passive: true });
     rail.addEventListener('keydown', (event) => {
       if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-      pauseAfterInteraction();
+      pauseForInteraction();
+    });
+    rail.addEventListener('keyup', (event) => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      resumeAfterInteraction(250);
     });
 
     reduceMotion.addEventListener('change', () => {
