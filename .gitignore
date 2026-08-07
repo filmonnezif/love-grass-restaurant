@@ -28,3 +28,4 @@ pnpm-debug.log*
 
 # raw root assets
 image (*).*
+.vercel
