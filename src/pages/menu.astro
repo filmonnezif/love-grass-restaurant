@@ -1,0 +1,310 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import menuData from '../data/menu.json';
+
+/* Build Menu + MenuItem schema from data */
+const menuSchema = {
+  "@context": "https://schema.org",
+  "@type": "Menu",
+  "name": "Love Grass Restaurant Menu",
+  "hasMenuSection": menuData.sections.map(section => ({
+    "@type": "MenuSection",
+    "name": section.name,
+    "description": section.description,
+    "hasMenuItem": section.items.map(item => ({
+      "@type": "MenuItem",
+      "name": item.name,
+      "description": item.description,
+      ...(item.dietary.includes('vegan') && {
+        "suitableForDiet": "https://schema.org/VeganDiet"
+      }),
+      ...(item.dietary.includes('vegetarian') && {
+        "suitableForDiet": "https://schema.org/VegetarianDiet"
+      }),
+      ...(item.dietary.includes('gluten-free') && {
+        "suitableForDiet": "https://schema.org/GlutenFreeDiet"
+      }),
+      "offers": {
+        "@type": "Offer",
+        "price": String(item.price),
+        "priceCurrency": item.currency
+      }
+    }))
+  }))
+};
+
+/* Breadcrumb for menu page */
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://love-grass.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Menu", "item": "https://love-grass.com/menu" }
+  ]
+};
+---
+
+<BaseLayout
+  title="Menu"
+  description="Explore our authentic Ethiopian menu featuring homemade teff injera, Tibs, Kitfo, Doro Wot, Beyeyanetu, and traditional beverages. All prices in AED."
+  schema={[menuSchema, breadcrumbSchema]}
+>
+
+  <!-- ========== MENU HERO ========== -->
+  <section class="menu-hero" aria-label="Our Menu">
+    <div class="menu-hero__overlay"></div>
+    <div class="menu-hero__content container">
+      <p class="section-label hero-animate" style="color: var(--color-accent-light);">Taste of Ethiopia</p>
+      <h1 class="menu-hero__title hero-animate hero-animate--delay-1">Our Menu</h1>
+      <p class="menu-hero__subtitle hero-animate hero-animate--delay-2">
+        Traditional recipes made with love, served on homemade teff injera
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== MENU NAVIGATION ========== -->
+  <nav class="menu-nav" aria-label="Menu sections">
+    <div class="container">
+      <ul class="menu-nav__list" role="list">
+        {menuData.sections.map(section => (
+          <li>
+            <a href={`#${section.id}`} class="menu-nav__link">
+              {section.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ========== MENU SECTIONS ========== -->
+  {menuData.sections.map(section => (
+    <section class="section menu-section" id={section.id} aria-labelledby={`${section.id}-title`}>
+      <div class="container">
+        <div data-reveal>
+          <p class="section-label">{section.nameAmharic}</p>
+          <h2 class="section-title" id={`${section.id}-title`}>{section.name}</h2>
+          <hr class="divider" />
+          <p class="section-subtitle">{section.description}</p>
+        </div>
+
+        <div class="menu-items-grid">
+          {section.items.map((item, i) => (
+            <article class="menu-item" id={`dish-${item.id}`} data-reveal data-reveal-delay={String(Math.min(i + 1, 5))}>
+              <div class="menu-item__img img-zoom">
+                <div class="menu-item__placeholder">
+                  <span class="font-ethiopic">{item.nameAmharic}</span>
+                </div>
+              </div>
+              <div class="menu-item__info">
+                <div class="menu-item__header">
+                  <h3 class="menu-item__name">
+                    {item.name}
+                  </h3>
+                  <span class="font-ethiopic menu-item__amharic">{item.nameAmharic}</span>
+                </div>
+                <p class="menu-item__desc">{item.description}</p>
+                <div class="menu-item__meta">
+                  <span class="price">
+                    <span class="price-currency">AED</span> {item.price}
+                  </span>
+                  {item.dietary.length > 0 && (
+                    <div class="menu-item__tags">
+                      {item.dietary.map(tag => (
+                        <span class="dietary-tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+</BaseLayout>
+
+<style>
+  /* ========== MENU HERO ========== */
+  .menu-hero {
+    position: relative;
+    padding-block: var(--space-8);
+    min-height: 40vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+    overflow: hidden;
+  }
+
+  .menu-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 70% 30%, rgba(212, 148, 58, 0.15), transparent 50%),
+      radial-gradient(circle at 20% 80%, rgba(45, 106, 46, 0.2), transparent 50%);
+  }
+
+  .menu-hero__content {
+    position: relative;
+    z-index: 1;
+    color: var(--color-text-inverse);
+  }
+
+  .menu-hero__title {
+    font-size: var(--text-5xl);
+    color: var(--color-text-inverse);
+    margin-bottom: var(--space-3);
+  }
+
+  .menu-hero__subtitle {
+    font-size: var(--text-lg);
+    opacity: 0.85;
+    max-width: 50ch;
+  }
+
+  /* ========== MENU NAV ========== */
+  .menu-nav {
+    position: sticky;
+    top: 64px;
+    z-index: var(--z-dropdown);
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border-light);
+    overflow-x: auto;
+  }
+
+  @media (min-width: 768px) {
+    .menu-nav {
+      top: 72px;
+    }
+  }
+
+  .menu-nav__list {
+    display: flex;
+    gap: var(--space-1);
+    padding-block: var(--space-2);
+    white-space: nowrap;
+  }
+
+  .menu-nav__link {
+    font-family: var(--font-heading);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
+    color: var(--color-text-muted);
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .menu-nav__link:hover {
+    background-color: var(--color-primary-50);
+    color: var(--color-primary);
+  }
+
+  /* ========== MENU SECTIONS ========== */
+  .menu-section:nth-child(even) {
+    background-color: var(--color-surface-alt);
+  }
+
+  .menu-items-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .menu-items-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .menu-items-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Menu Item Card */
+  .menu-item {
+    background-color: var(--color-surface-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition:
+      box-shadow var(--duration-normal) var(--ease-out),
+      transform var(--duration-normal) var(--ease-out);
+  }
+
+  .menu-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .menu-item__img {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .menu-item__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100));
+    color: var(--color-primary);
+    font-family: var(--font-ethiopic);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+  }
+
+  .menu-item__info {
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .menu-item__header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .menu-item__name {
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: 600;
+  }
+
+  .menu-item__amharic {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .menu-item__desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .menu-item__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .menu-item__tags {
+    display: flex;
+    gap: var(--space-1);
+  }
+</style>

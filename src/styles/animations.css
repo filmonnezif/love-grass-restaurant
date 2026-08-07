@@ -1,0 +1,193 @@
+/* ==========================================================================
+   Scroll-Driven Animations & Transitions
+   CSS-only, progressive enhancement with graceful fallback
+   ========================================================================== */
+
+/* ---------- Scroll-Driven Reveal (Fade In + Slide Up) ---------- */
+
+/* Elements with [data-reveal] will fade/slide in on scroll */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children with delays */
+[data-reveal-delay="1"] { transition-delay: 100ms; }
+[data-reveal-delay="2"] { transition-delay: 200ms; }
+[data-reveal-delay="3"] { transition-delay: 300ms; }
+[data-reveal-delay="4"] { transition-delay: 400ms; }
+[data-reveal-delay="5"] { transition-delay: 500ms; }
+
+/* ---------- CSS Scroll-Driven Animations (Modern Browsers) ---------- */
+
+/* For browsers that support scroll-driven animations API */
+@supports (animation-timeline: view()) {
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes reveal-scale {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes reveal-left {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes reveal-right {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  [data-scroll-reveal] {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+
+  [data-scroll-reveal="scale"] {
+    animation-name: reveal-scale;
+  }
+
+  [data-scroll-reveal="left"] {
+    animation-name: reveal-left;
+  }
+
+  [data-scroll-reveal="right"] {
+    animation-name: reveal-right;
+  }
+}
+
+/* ---------- Hero Entrance Animation ---------- */
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-animate {
+  animation: hero-fade-in 0.8s var(--ease-out) forwards;
+}
+
+.hero-animate--delay-1 {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.hero-animate--delay-2 {
+  animation-delay: 0.4s;
+  opacity: 0;
+}
+
+.hero-animate--delay-3 {
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+/* ---------- Hover Micro-Interactions ---------- */
+
+.hover-lift {
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.hover-glow {
+  transition: box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(45, 106, 46, 0.15);
+}
+
+/* ---------- Image Hover Zoom ---------- */
+
+.img-zoom {
+  overflow: hidden;
+}
+
+.img-zoom img {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.img-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* ---------- Star Rating Animation ---------- */
+
+@keyframes star-pop {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.star-animate {
+  animation: star-pop 0.3s var(--ease-out) forwards;
+  opacity: 0;
+}
+
+/* ---------- Pulse Animation (for CTAs) ---------- */
+
+@keyframes subtle-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 148, 58, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(212, 148, 58, 0); }
+}
+
+.pulse {
+  animation: subtle-pulse 2s var(--ease-in-out) infinite;
+}

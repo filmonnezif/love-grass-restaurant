@@ -1,0 +1,164 @@
+---
+import SEOHead from '../components/global/SEOHead.astro';
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+
+import '../styles/global.css';
+import '../styles/utilities.css';
+import '../styles/animations.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonicalURL?: string;
+  ogImage?: string;
+  ogType?: string;
+  noIndex?: boolean;
+  schema?: object | object[];
+}
+
+const {
+  title,
+  description,
+  canonicalURL,
+  ogImage,
+  ogType,
+  noIndex,
+  schema,
+} = Astro.props;
+
+/* Restaurant Schema — present on every page */
+const restaurantSchema = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Love Grass Restaurant",
+  "alternateName": "Love Grass Restaurant LLC",
+  "description": "Authentic Ethiopian restaurant in Dubai specializing in homemade teff injera and traditional dishes like Tibs, Kitfo, and Doro Wot.",
+  "url": "https://love-grass.com",
+  "telephone": "+971000000000",
+  "email": "info@love-grass.com",
+  "priceRange": "$$",
+  "servesCuisine": ["Ethiopian", "African", "East African"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Dubai",
+    "addressLocality": "Dubai",
+    "addressRegion": "Dubai",
+    "addressCountry": "AE"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 25.2048,
+    "longitude": 55.2708
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+      "opens": "11:00",
+      "closes": "23:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Friday", "Saturday"],
+      "opens": "11:00",
+      "closes": "00:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Sunday",
+      "opens": "12:00",
+      "closes": "23:00"
+    }
+  ],
+  "image": "https://love-grass.com/images/og-default.jpg",
+  "sameAs": []
+};
+
+/* Breadcrumb schema */
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://love-grass.com/"
+    }
+  ]
+};
+
+/* Merge all schemas */
+const allSchemas = [restaurantSchema, breadcrumbSchema, ...(Array.isArray(schema) ? schema : schema ? [schema] : [])];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2D6A2E" />
+
+  <SEOHead
+    title={title}
+    description={description}
+    canonicalURL={canonicalURL}
+    ogImage={ogImage}
+    ogType={ogType}
+    noIndex={noIndex}
+  />
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="/fonts/outfit-variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Structured Data (JSON-LD) -->
+  {allSchemas.map(s => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
+  ))}
+
+  <!-- Speculation Rules for instant page transitions -->
+  <script type="speculationrules">
+  {
+    "prefetch": [{
+      "where": { "href_matches": "/*" },
+      "eagerness": "moderate"
+    }]
+  }
+  </script>
+</head>
+<body>
+  <Header />
+
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <Footer />
+
+  <!-- Scroll reveal observer (fallback for browsers without scroll-driven animations) -->
+  <script>
+    if (!CSS.supports('animation-timeline', 'view()')) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      );
+
+      document.querySelectorAll('[data-reveal]').forEach((el) => {
+        observer.observe(el);
+      });
+    }
+  </script>
+</body>
+</html>

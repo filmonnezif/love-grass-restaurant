@@ -1,0 +1,160 @@
+{
+  "sections": [
+    {
+      "id": "injera-platters",
+      "name": "Injera Platters",
+      "nameAmharic": "የእንጀራ ምግቦች",
+      "description": "Traditional Ethiopian dishes served on our signature homemade injera",
+      "items": [
+        {
+          "id": "tibs",
+          "name": "Tibs",
+          "nameAmharic": "ጥብስ",
+          "description": "Fried meat served with chili powder and home made injera",
+          "price": 45,
+          "currency": "AED",
+          "image": "tibs.jpg",
+          "tags": ["signature", "popular"],
+          "dietary": []
+        },
+        {
+          "id": "kitfo",
+          "name": "Kitfo",
+          "nameAmharic": "ክትፎ",
+          "description": "Ethiopian steak tartare seasoned with mitmita spice and niter kibbeh butter",
+          "price": 55,
+          "currency": "AED",
+          "image": "kitfo.jpg",
+          "tags": ["signature"],
+          "dietary": ["gluten-free"]
+        },
+        {
+          "id": "doro-wot",
+          "name": "Doro Wot",
+          "nameAmharic": "ዶሮ ወጥ",
+          "description": "Slow-cooked chicken stew with berbere spice, boiled eggs, and aromatic herbs",
+          "price": 50,
+          "currency": "AED",
+          "image": "doro-wot.jpg",
+          "tags": ["popular"],
+          "dietary": ["gluten-free"]
+        },
+        {
+          "id": "beyeyanetu",
+          "name": "Beyeyanetu",
+          "nameAmharic": "በየአይነቱ",
+          "description": "A colorful vegan platter featuring assorted vegetable dishes and lentils on injera",
+          "price": 40,
+          "currency": "AED",
+          "image": "beyeyanetu.jpg",
+          "tags": ["popular"],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "yebeg-tibs",
+          "name": "Yebeg Tibs",
+          "nameAmharic": "የበግ ጥብስ",
+          "description": "Tender lamb sautéed with rosemary, jalapeño, onions, and garlic",
+          "price": 60,
+          "currency": "AED",
+          "image": "yebeg-tibs.jpg",
+          "tags": ["premium"],
+          "dietary": ["gluten-free"]
+        },
+        {
+          "id": "shiro",
+          "name": "Shiro Wot",
+          "nameAmharic": "ሽሮ ወጥ",
+          "description": "Creamy chickpea flour stew seasoned with garlic, ginger, and berbere spice",
+          "price": 35,
+          "currency": "AED",
+          "image": "shiro.jpg",
+          "tags": ["popular"],
+          "dietary": ["vegan", "vegetarian"]
+        }
+      ]
+    },
+    {
+      "id": "sides",
+      "name": "Sides & Extras",
+      "nameAmharic": "ተጨማሪ ምግቦች",
+      "description": "Perfect accompaniments to complete your Ethiopian feast",
+      "items": [
+        {
+          "id": "injera-extra",
+          "name": "Extra Injera",
+          "nameAmharic": "ተጨማሪ እንጀራ",
+          "description": "Additional serving of our signature teff-based injera bread",
+          "price": 5,
+          "currency": "AED",
+          "image": "injera.jpg",
+          "tags": [],
+          "dietary": ["vegan"]
+        },
+        {
+          "id": "salata",
+          "name": "Ethiopian Salad",
+          "nameAmharic": "ሰላጣ",
+          "description": "Fresh tomatoes, onions, and green peppers with lemon dressing",
+          "price": 15,
+          "currency": "AED",
+          "image": "salata.jpg",
+          "tags": [],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "sambusa",
+          "name": "Sambusa",
+          "nameAmharic": "ሳምቡሳ",
+          "description": "Crispy pastry filled with seasoned lentils or spiced meat",
+          "price": 12,
+          "currency": "AED",
+          "image": "sambusa.jpg",
+          "tags": [],
+          "dietary": []
+        }
+      ]
+    },
+    {
+      "id": "drinks",
+      "name": "Beverages",
+      "nameAmharic": "መጠጦች",
+      "description": "Traditional Ethiopian beverages and refreshments",
+      "items": [
+        {
+          "id": "buna",
+          "name": "Ethiopian Coffee (Buna)",
+          "nameAmharic": "ቡና",
+          "description": "Freshly roasted and brewed Ethiopian coffee served in a traditional ceremony style",
+          "price": 20,
+          "currency": "AED",
+          "image": "buna.jpg",
+          "tags": ["signature"],
+          "dietary": ["vegan"]
+        },
+        {
+          "id": "tej",
+          "name": "Tej (Honey Wine)",
+          "nameAmharic": "ጠጅ",
+          "description": "Traditional Ethiopian honey wine with a delicate sweet taste",
+          "price": 25,
+          "currency": "AED",
+          "image": "tej.jpg",
+          "tags": [],
+          "dietary": ["vegetarian"]
+        },
+        {
+          "id": "fresh-juice",
+          "name": "Spris (Mixed Juice)",
+          "nameAmharic": "ስፕሪስ",
+          "description": "Layered fresh fruit juice blend — mango, avocado, and papaya",
+          "price": 18,
+          "currency": "AED",
+          "image": "spris.jpg",
+          "tags": ["popular"],
+          "dietary": ["vegan"]
+        }
+      ]
+    }
+  ]
+}
