@@ -75,7 +75,10 @@
   }
 
   [data-reveal] {
-    animation: reveal-up ease-out both;
+    animation-name: reveal-up;
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timing-function: ease-out;
     animation-timeline: view();
     animation-range: entry 5% cover 35%;
   }
