@@ -20,6 +20,52 @@ const foodImages: Record<string, ImageMetadata> = {
   'teff-berry-delight.png': teffBerryDelightImg,
 };
 
+import atmosphere1Poster from '../assets/atmosphere/posters/atmosphere-1.webp';
+import atmosphere2Poster from '../assets/atmosphere/posters/atmosphere-2.webp';
+import atmosphere3Poster from '../assets/atmosphere/posters/atmosphere-3.webp';
+import atmosphere4Poster from '../assets/atmosphere/posters/atmosphere-4.webp';
+import atmosphere5Poster from '../assets/atmosphere/posters/atmosphere-5.webp';
+import atmosphere6Poster from '../assets/atmosphere/posters/atmosphere-6.webp';
+
+const atmosphereItems = [
+  {
+    id: 'atmosphere-1',
+    title: 'A Special Visit from Neway Debebe',
+    amharic: 'የነዋይ ደበበ ልዩ ጉብኝት',
+    poster: atmosphere1Poster,
+  },
+  {
+    id: 'atmosphere-2',
+    title: 'An Emirati Guest Enjoys Derek Tibs',
+    amharic: 'ኢሚሬታዊ እንግዳ ደረቅ ጥብስ ሲቀምስ',
+    poster: atmosphere2Poster,
+  },
+  {
+    id: 'atmosphere-3',
+    title: 'Families Gather Around Ethiopian Favorites',
+    amharic: 'ቤተሰቦች በአንድ ማዕድ',
+    poster: atmosphere3Poster,
+  },
+  {
+    id: 'atmosphere-4',
+    title: "An Emirati Family's Ethiopian Feast",
+    amharic: 'የኢሚሬታዊ ቤተሰብ የኢትዮጵያ ማዕድ',
+    poster: atmosphere4Poster,
+  },
+  {
+    id: 'atmosphere-5',
+    title: 'A Joyful Ethiopian Wedding Celebration',
+    amharic: 'ደማቅ የኢትዮጵያ ሰርግ',
+    poster: atmosphere5Poster,
+  },
+  {
+    id: 'atmosphere-6',
+    title: 'Mahberawi, Made for Sharing',
+    amharic: 'ለመጋራት የቀረበ ማህበራዊ',
+    poster: atmosphere6Poster,
+  },
+];
+
 /* Compute aggregate rating for schema */
 const allRatings = reviewsData.map(r => r.rating);
 const avgRating = (allRatings.reduce((a, b) => a + b, 0) / allRatings.length).toFixed(1);
@@ -171,28 +217,56 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
         </p>
       </div>
 
-      <div class="atmosphere-grid" data-reveal>
-        <div class="atmosphere-item atmosphere-item--large img-zoom">
-          <div class="atmosphere-placeholder">
-            <span>Restaurant Interior</span>
-          </div>
-        </div>
-        <div class="atmosphere-item img-zoom">
-          <div class="atmosphere-placeholder">
-            <span>Ethiopian Coffee Ceremony</span>
-          </div>
-        </div>
-        <div class="atmosphere-item img-zoom">
-          <div class="atmosphere-placeholder">
-            <span>Communal Dining</span>
-          </div>
-        </div>
-        <div class="atmosphere-item img-zoom">
-          <div class="atmosphere-placeholder">
-            <span>Celebrity Guests</span>
-          </div>
+      <div
+        class="atmosphere-carousel"
+        data-atmosphere-grid
+        data-reveal
+        role="group"
+        aria-roledescription="carousel"
+        aria-label="Atmosphere videos"
+      >
+        <div class="atmosphere-carousel__track" data-atmosphere-track>
+          {atmosphereItems.map((item, i) => (
+            <button
+              type="button"
+              class:list={['atmosphere-card', { 'is-active': i === 0 }]}
+              data-atmosphere-card
+              data-atmosphere-index={String(i)}
+              aria-label={`Show ${item.title}`}
+              aria-pressed={i === 0 ? 'true' : 'false'}
+            >
+              <div class="atmosphere-card__media">
+                <Image
+                  src={item.poster}
+                  alt={item.title}
+                  width={540}
+                  height={960}
+                  loading="lazy"
+                  decoding="async"
+                  class="atmosphere-card__poster"
+                />
+                <video
+                  class="atmosphere-card__video"
+                  loop
+                  muted
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                >
+                  <source src={`/videos/atmosphere/${item.id}.webm`} type="video/webm" />
+                  <source src={`/videos/atmosphere/${item.id}.mp4`} type="video/mp4" />
+                </video>
+                <div class="atmosphere-card__overlay">
+                  <span class="font-ethiopic atmosphere-card__amharic">{item.amharic}</span>
+                  <h3 class="atmosphere-card__title">{item.title}</h3>
+                </div>
+              </div>
+            </button>
+          ))}
         </div>
       </div>
+
+      <p class="sr-only" data-atmosphere-status aria-live="polite"></p>
     </div>
   </section>
 
@@ -1275,48 +1349,192 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
   /* ========== ATMOSPHERE ========== */
   .atmosphere {
     background-color: var(--color-surface-alt);
+    position: relative;
   }
 
-  .atmosphere-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
+  .atmosphere-carousel {
+    position: relative;
+    height: clamp(22rem, 112vw, 33rem);
     margin-top: var(--space-6);
-  }
-
-  @media (min-width: 768px) {
-    .atmosphere-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: auto auto;
-    }
-
-    .atmosphere-item--large {
-      grid-row: 1 / 3;
-    }
-  }
-
-  .atmosphere-item {
-    border-radius: var(--radius-lg);
     overflow: hidden;
+    touch-action: pan-y;
   }
 
-  .atmosphere-placeholder {
-    aspect-ratio: 16 / 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
-    color: var(--color-text-inverse);
-    font-family: var(--font-heading);
-    font-weight: 500;
-    font-size: var(--text-sm);
-    opacity: 0.7;
+  .atmosphere-carousel__track {
+    position: absolute;
+    inset: 0;
   }
 
-  .atmosphere-item--large .atmosphere-placeholder {
-    aspect-ratio: auto;
+  @media (min-width: 900px) {
+    .atmosphere-carousel {
+      height: clamp(25rem, 44vw, 33rem);
+    }
+  }
+
+  .atmosphere-card {
+    --carousel-position: 0;
+    --carousel-distance: 0;
+    --carousel-step: min(48vw, 14rem);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: clamp(9.5rem, 56vw, 18rem);
+    min-width: 0;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-primary);
+    overflow: hidden;
+    aspect-ratio: 9 / 16;
+    background-color: var(--color-primary-dark);
+    box-shadow: var(--shadow-md);
+    text-align: left;
+    isolation: isolate;
+    opacity: max(0.35, calc(0.88 - (var(--carousel-distance) * 0.15)));
+    z-index: calc(10 - var(--carousel-distance));
+    transform:
+      translate(-50%, -50%)
+      translateX(calc(var(--carousel-position) * var(--carousel-step)))
+      scale(0.9);
+    transition:
+      transform 650ms var(--ease-in-out),
+      box-shadow 400ms var(--ease-out),
+      opacity 650ms var(--ease-in-out);
+  }
+
+  .atmosphere-card[data-carousel-distance='2'],
+  .atmosphere-card[data-carousel-distance='3'] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (min-width: 900px) {
+    .atmosphere-card {
+      --carousel-step: clamp(9.75rem, 17.5vw, 13.5rem);
+      width: clamp(13rem, 21vw, 16.5rem);
+    }
+
+    .atmosphere-card[data-carousel-distance='2'] {
+      opacity: calc(0.88 - (var(--carousel-distance) * 0.15));
+      pointer-events: auto;
+    }
+  }
+
+  .atmosphere-card.is-active {
+    box-shadow:
+      0 0 0 3px var(--color-primary-light),
+      var(--shadow-xl);
+    opacity: 1;
+    z-index: 20;
+    transform:
+      translate(-50%, -50%)
+      translateX(calc(var(--carousel-position) * var(--carousel-step)))
+      scale(1.1);
+  }
+
+  .atmosphere-card.is-wrapping {
+    transition: none;
+  }
+
+  .atmosphere-card:not(.is-active):hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .atmosphere-card:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .atmosphere-card__media {
+    position: relative;
+    width: 100%;
     height: 100%;
-    min-height: 300px;
+  }
+
+  .atmosphere-card__poster,
+  .atmosphere-card__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity var(--duration-normal) var(--ease-out);
+  }
+
+  .atmosphere-card__poster {
+    z-index: 1;
+  }
+
+  .atmosphere-card__video {
+    z-index: 2;
+    opacity: 0;
+  }
+
+  .atmosphere-card.is-playing .atmosphere-card__video {
+    opacity: 1;
+  }
+
+  .atmosphere-card__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--space-4);
+    background: linear-gradient(
+      to top,
+      rgba(15, 45, 18, 0.92) 0%,
+      rgba(15, 45, 18, 0.38) 45%,
+      transparent 75%
+    );
+    color: var(--color-text-inverse);
+    pointer-events: none;
+  }
+
+  .atmosphere-card__amharic {
+    font-size: var(--text-xs);
+    color: var(--color-accent-light);
+    margin-bottom: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .atmosphere-card__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-inverse);
+    line-height: 1.25;
+  }
+
+  .atmosphere-card:not(.is-active) .atmosphere-card__overlay {
+    padding: var(--space-3);
+  }
+
+  .atmosphere-card:not(.is-active) .atmosphere-card__amharic {
+    display: none;
+  }
+
+  .atmosphere-card:not(.is-active) .atmosphere-card__title {
+    font-size: var(--text-sm);
+  }
+
+  @media (max-width: 399px) {
+    .atmosphere-card {
+      border-radius: var(--radius-md);
+    }
+
+    .atmosphere-card__overlay,
+    .atmosphere-card:not(.is-active) .atmosphere-card__overlay {
+      padding: var(--space-2);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .atmosphere-card,
+    .atmosphere-card__poster,
+    .atmosphere-card__video {
+      transition: none;
+    }
   }
 
   /* ========== REVIEWS ========== */
@@ -1560,4 +1778,156 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
 
   initFeaturedShowcase();
   document.addEventListener('astro:page-load', initFeaturedShowcase);
+</script>
+
+<!-- Infinite portrait atmosphere carousel -->
+<script>
+  function initAtmosphereCarousel() {
+    const carousel = document.querySelector<HTMLElement>('[data-atmosphere-grid]');
+    if (!carousel || carousel.dataset.initialized === 'true') return;
+
+    const status = document.querySelector<HTMLElement>('[data-atmosphere-status]');
+    const cards = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-atmosphere-card]'))
+      .sort((a, b) => Number(a.dataset.atmosphereIndex) - Number(b.dataset.atmosphereIndex));
+    if (!cards.length) return;
+
+    carousel.dataset.initialized = 'true';
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const ROTATION_DELAY = 3000;
+    const INTERACTION_DELAY = 6000;
+    let activeIndex = 0;
+    let interactionPaused = false;
+    let carouselVisible = false;
+    let rotationTimer = 0;
+    let interactionTimer = 0;
+
+    const stopRotation = () => {
+      window.clearTimeout(rotationTimer);
+      rotationTimer = 0;
+    };
+
+    const canPlayVideos = () =>
+      carouselVisible && !document.hidden && !reduceMotion.matches;
+
+    const syncVideos = () => {
+      cards.forEach((card, index) => {
+        const video = card.querySelector<HTMLVideoElement>('.atmosphere-card__video');
+        if (!video) return;
+
+        if (index === activeIndex && canPlayVideos()) {
+          const playPromise = video.play();
+          playPromise?.catch(() => card.classList.remove('is-playing'));
+        } else {
+          video.pause();
+          card.classList.remove('is-playing');
+        }
+      });
+    };
+
+    const canRotate = () =>
+      carouselVisible &&
+      !document.hidden &&
+      !reduceMotion.matches &&
+      !interactionPaused;
+
+    const getCircularPosition = (index: number, centerIndex: number) => {
+      let position = index - centerIndex;
+      while (position > 2) position -= cards.length;
+      while (position < -3) position += cards.length;
+      return position;
+    };
+
+    const setActive = (nextIndex: number, announce = false) => {
+      if (nextIndex < 0 || nextIndex >= cards.length) return;
+      activeIndex = nextIndex;
+
+      cards.forEach((card, index) => {
+        const position = getCircularPosition(index, activeIndex);
+        const previousPosition = Number(card.dataset.carouselPosition);
+        const wraps = Number.isFinite(previousPosition) && Math.abs(position - previousPosition) > 1;
+        const isActive = index === activeIndex;
+
+        card.classList.toggle('is-wrapping', wraps);
+        card.classList.toggle('is-active', isActive);
+        card.setAttribute('aria-pressed', String(isActive));
+        card.style.setProperty('--carousel-position', String(position));
+        card.style.setProperty('--carousel-distance', String(Math.abs(position)));
+        card.dataset.carouselPosition = String(position);
+        card.dataset.carouselDistance = String(Math.abs(position));
+      });
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => cards.forEach((card) => card.classList.remove('is-wrapping')));
+      });
+
+      syncVideos();
+
+      if (announce && status) {
+        const label = cards[activeIndex].getAttribute('aria-label')?.replace(/^Show /, '') ?? '';
+        status.textContent = `${label} centered`;
+      }
+    };
+
+    const scheduleRotation = () => {
+      stopRotation();
+      if (!canRotate()) return;
+
+      rotationTimer = window.setTimeout(() => {
+        setActive((activeIndex + 1) % cards.length);
+        scheduleRotation();
+      }, ROTATION_DELAY);
+    };
+
+    const syncState = () => {
+      syncVideos();
+      scheduleRotation();
+    };
+
+    const pauseForInteraction = () => {
+      interactionPaused = true;
+      stopRotation();
+      window.clearTimeout(interactionTimer);
+
+      interactionTimer = window.setTimeout(() => {
+        interactionPaused = false;
+        scheduleRotation();
+      }, INTERACTION_DELAY);
+    };
+
+    cards.forEach((card, index) => {
+      const video = card.querySelector<HTMLVideoElement>('.atmosphere-card__video');
+      video?.addEventListener('playing', () => card.classList.add('is-playing'));
+      video?.addEventListener('pause', () => card.classList.remove('is-playing'));
+
+      card.addEventListener('click', () => {
+        setActive(index, true);
+        pauseForInteraction();
+      });
+    });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        carouselVisible = entry.isIntersecting;
+        syncState();
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(carousel);
+
+    reduceMotion.addEventListener('change', () => {
+      if (reduceMotion.matches) {
+        interactionPaused = false;
+        window.clearTimeout(interactionTimer);
+      }
+      syncState();
+    });
+
+    document.addEventListener('visibilitychange', syncState);
+    setActive(0);
+    syncVideos();
+  }
+
+  initAtmosphereCarousel();
+  document.addEventListener('astro:page-load', initAtmosphereCarousel);
 </script>
