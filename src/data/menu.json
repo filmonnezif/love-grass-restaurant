@@ -79,7 +79,7 @@
           "description": "Slow-cooked chicken stew with berbere spice, boiled eggs, and aromatic herbs",
           "price": 50,
           "currency": "AED",
-          "image": "doro-wot.jpg",
+          "image": "doro-wot.png",
           "tags": ["popular"],
           "dietary": ["gluten-free"]
         },
@@ -90,7 +90,7 @@
           "description": "A colorful vegan platter featuring assorted vegetable dishes and lentils on injera",
           "price": 40,
           "currency": "AED",
-          "image": "beyeyanetu.jpg",
+          "image": "beyeyanetu.png",
           "tags": ["popular"],
           "dietary": ["vegan", "vegetarian"]
         },
@@ -101,20 +101,9 @@
           "description": "Tender lamb sautéed with rosemary, jalapeño, onions, and garlic",
           "price": 60,
           "currency": "AED",
-          "image": "yebeg-tibs.jpg",
+          "image": "yebeg-tibs.png",
           "tags": ["premium"],
           "dietary": ["gluten-free"]
-        },
-        {
-          "id": "shiro",
-          "name": "Shiro Wot",
-          "nameAmharic": "ሽሮ ወጥ",
-          "description": "Creamy chickpea flour stew seasoned with garlic, ginger, and berbere spice",
-          "price": 35,
-          "currency": "AED",
-          "image": "shiro.jpg",
-          "tags": ["popular"],
-          "dietary": ["vegan", "vegetarian"]
         }
       ]
     },
@@ -131,7 +120,7 @@
           "description": "Additional serving of our signature teff-based injera bread",
           "price": 5,
           "currency": "AED",
-          "image": "injera.jpg",
+          "image": "extra-injera.png",
           "tags": [],
           "dietary": ["vegan"]
         },
@@ -142,7 +131,7 @@
           "description": "Fresh tomatoes, onions, and green peppers with lemon dressing",
           "price": 15,
           "currency": "AED",
-          "image": "salata.jpg",
+          "image": "ethiopian-salad.png",
           "tags": [],
           "dietary": ["vegan", "vegetarian"]
         },
@@ -153,7 +142,7 @@
           "description": "Crispy pastry filled with seasoned lentils or spiced meat",
           "price": 12,
           "currency": "AED",
-          "image": "sambusa.jpg",
+          "image": "sambusa.png",
           "tags": [],
           "dietary": []
         }
@@ -172,7 +161,7 @@
           "description": "Freshly roasted and brewed Ethiopian coffee served in a traditional ceremony style",
           "price": 20,
           "currency": "AED",
-          "image": "buna.jpg",
+          "image": "buna.png",
           "tags": ["signature"],
           "dietary": ["vegan"]
         },
@@ -183,7 +172,7 @@
           "description": "Traditional Ethiopian honey wine with a delicate sweet taste",
           "price": 25,
           "currency": "AED",
-          "image": "tej.jpg",
+          "image": "tej.png",
           "tags": [],
           "dietary": ["vegetarian"]
         },
@@ -194,7 +183,7 @@
           "description": "Layered fresh fruit juice blend — mango, avocado, and papaya",
           "price": 18,
           "currency": "AED",
-          "image": "spris.jpg",
+          "image": "spris.png",
           "tags": ["popular"],
           "dietary": ["vegan"]
         }
