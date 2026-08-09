@@ -538,25 +538,28 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
     }
 
     .hero__layout {
-      grid-template-columns: minmax(0, 58%) minmax(0, 42%);
+      grid-template-columns: minmax(0, 42%) minmax(0, 58%);
       grid-template-rows: 1fr;
       gap: 0;
       padding-block: calc(var(--header-height) + var(--space-5)) var(--space-5);
     }
 
     .hero__visual {
+      grid-column: 2;
+      grid-row: 1;
       min-height: min(74svh, 720px);
     }
 
     .hero__lottie {
-      inset: -4% -4% -14% -14%;
+      inset: -4% -14% -14% -4%;
       transform: translateY(-4%) scale(0.8);
     }
 
     .hero__content {
+      grid-column: 1;
+      grid-row: 1;
       padding-top: 0;
       text-align: left;
-      transform: translateX(clamp(-3rem, -3vw, -1.5rem));
     }
 
     .hero__label {
@@ -581,7 +584,7 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
 
   @media (min-width: 1200px) {
     .hero__layout {
-      grid-template-columns: minmax(0, 60%) minmax(0, 40%);
+      grid-template-columns: minmax(0, 40%) minmax(0, 60%);
     }
   }
 
