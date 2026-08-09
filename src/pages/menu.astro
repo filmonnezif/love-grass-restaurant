@@ -242,12 +242,12 @@ const breadcrumbSchema = {
   .menu-hero__content {
     position: relative;
     z-index: 1;
-    min-height: 290px;
+    min-height: calc(290px + var(--header-height));
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding-block: var(--space-6);
+    padding-block: calc(var(--header-height) + var(--space-6)) var(--space-6);
     text-align: left;
   }
 
@@ -275,7 +275,7 @@ const breadcrumbSchema = {
 
   .menu-nav {
     position: sticky;
-    top: 64px;
+    top: var(--header-height);
     z-index: var(--z-dropdown);
     overflow-x: auto;
     overscroll-behavior-inline: contain;
@@ -715,12 +715,6 @@ const breadcrumbSchema = {
 
     .menu-section__header {
       gap: var(--space-4);
-    }
-  }
-
-  @media (min-width: 768px) {
-    .menu-nav {
-      top: 72px;
     }
   }
 

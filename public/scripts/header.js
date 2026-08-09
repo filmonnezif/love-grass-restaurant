@@ -31,20 +31,45 @@ if (toggle && menu) {
   });
 }
 
-// Sticky header shadow on scroll
 const header = document.getElementById('site-header');
-if (header && 'IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      header.classList.toggle('scrolled', !entry.isIntersecting);
-    },
-    { threshold: 1.0 }
-  );
+const progress = document.getElementById('scroll-progress');
+const supportsScrollTimeline = CSS.supports?.('animation-timeline: scroll()') ?? false;
+let updateFrame = 0;
 
-  const sentinel = document.createElement('div');
-  sentinel.style.height = '1px';
-  sentinel.style.position = 'absolute';
-  sentinel.style.top = '0';
-  document.body.prepend(sentinel);
-  observer.observe(sentinel);
+function updateScrollState() {
+  updateFrame = 0;
+
+  const scrollTop = window.scrollY;
+  const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+
+  header?.classList.toggle('scrolled', scrollTop > 48);
+  progress?.classList.toggle('is-scrollable', scrollRange > 0);
+
+  if (!supportsScrollTimeline && progress) {
+    const scrollProgress = scrollRange > 0
+      ? Math.min(1, Math.max(0, scrollTop / scrollRange))
+      : 0;
+
+    progress.style.setProperty('--scroll-progress', String(scrollProgress));
+  }
 }
+
+function scheduleScrollUpdate() {
+  if (!updateFrame) {
+    updateFrame = window.requestAnimationFrame(updateScrollState);
+  }
+}
+
+function syncAfterNavigation() {
+  updateScrollState();
+  window.requestAnimationFrame(scheduleScrollUpdate);
+  window.setTimeout(scheduleScrollUpdate, 100);
+}
+
+window.addEventListener('scroll', scheduleScrollUpdate, { passive: true });
+window.addEventListener('resize', scheduleScrollUpdate, { passive: true });
+window.addEventListener('hashchange', syncAfterNavigation);
+window.addEventListener('pageshow', syncAfterNavigation);
+window.addEventListener('load', syncAfterNavigation, { once: true });
+
+updateScrollState();
