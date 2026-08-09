@@ -1944,11 +1944,14 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
 <script>
   async function initLottie() {
     const container = document.getElementById('hero-lottie-container');
-    if (!container) return;
+    if (!container || container.children.length > 0) return; // Prevent duplicate canvases
 
     try {
       const { DotLottie } = await import('@lottiefiles/dotlottie-web');
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Double check after await in case of race conditions
+      if (container.children.length > 0) return;
 
       const canvas = document.createElement('canvas');
       canvas.setAttribute('aria-hidden', 'true');
@@ -1985,6 +1988,7 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
   }
 
   initLottie();
+  document.addEventListener('astro:page-load', initLottie);
 </script>
 
 <!-- Signature dishes editorial rail -->
