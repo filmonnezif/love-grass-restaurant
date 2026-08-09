@@ -147,7 +147,7 @@ const breadcrumbSchema = {
             </div>
           </header>
 
-          <div class="menu-items-grid">
+          <div class="menu-items-grid" data-item-count={section.items.length}>
             {section.items.map((item, itemIndex) => {
               const image = foodImages[item.image];
               const featureLabel = featureTagLabel(item.tags);
@@ -158,6 +158,12 @@ const breadcrumbSchema = {
                   id={`dish-${item.id}`}
                   data-menu-card
                   data-card-order={String(itemIndex)}
+                  data-item-name={item.name}
+                  data-item-amharic={item.nameAmharic}
+                  data-item-description={item.description}
+                  data-item-price={`${item.currency} ${item.price}`}
+                  data-item-image={image.src}
+                  data-item-tags={encodeURIComponent(JSON.stringify(item.dietary.map(tag => dietaryLabels[tag] ?? tag)))}
                 >
                   <div class="menu-item__visual">
                     {featureLabel && <span class="menu-item__feature">{featureLabel}</span>}
@@ -205,10 +211,42 @@ const breadcrumbSchema = {
               );
             })}
           </div>
+
+          {section.items.length > 3 && (
+            <div class="menu-section__actions">
+              <button class="btn btn--outline explore-more-btn" data-expand-section={section.id}>
+                Explore More {section.name}
+              </button>
+              <button class="btn btn--outline show-less-btn" data-collapse-section={section.id}>
+                Show Less
+              </button>
+            </div>
+          )}
         </div>
       </section>
     ))}
   </div>
+
+  <dialog id="item-modal" class="item-modal">
+    <div class="item-modal__content">
+      <button class="item-modal__close" aria-label="Close details" id="modal-close-btn">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+      </button>
+      <div class="item-modal__visual">
+        <span id="modal-number" class="item-modal__number"></span>
+        <img id="modal-image" src="" alt="" class="item-modal__image" />
+      </div>
+      <div class="item-modal__body">
+        <p id="modal-amharic" class="font-ethiopic item-modal__amharic"></p>
+        <div class="item-modal__heading">
+          <h3 id="modal-name" class="item-modal__name"></h3>
+          <p id="modal-price" class="item-modal__price"></p>
+        </div>
+        <p id="modal-description" class="item-modal__description"></p>
+        <ul id="modal-tags" class="menu-item__tags item-modal__tags"></ul>
+      </div>
+    </div>
+  </dialog>
 
 </BaseLayout>
 
@@ -242,12 +280,12 @@ const breadcrumbSchema = {
   .menu-hero__content {
     position: relative;
     z-index: 1;
-    min-height: calc(290px + var(--header-height));
+    min-height: calc(100px + var(--header-height));
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding-block: calc(var(--header-height) + var(--space-6)) var(--space-6);
+    padding-block: calc(var(--header-height) + var(--space-4)) var(--space-5);
     text-align: left;
   }
 
@@ -259,7 +297,7 @@ const breadcrumbSchema = {
 
   .menu-hero__title {
     color: var(--color-text-inverse);
-    font-size: clamp(3rem, 9vw, 5rem);
+    font-size: clamp(2.5rem, 6vw, 4rem);
     font-weight: 700;
     letter-spacing: -0.035em;
     line-height: 1;
@@ -362,7 +400,7 @@ const breadcrumbSchema = {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    padding-block: var(--space-7);
+    padding-block: var(--space-4);
     scroll-margin-top: 132px;
   }
 
@@ -467,9 +505,9 @@ const breadcrumbSchema = {
 
   .menu-items-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-    margin-top: var(--space-6);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin-top: var(--space-4);
   }
 
   .menu-item {
@@ -531,11 +569,11 @@ const breadcrumbSchema = {
     position: relative;
     z-index: 1;
     isolation: isolate;
-    min-height: 250px;
+    min-height: 140px;
     display: grid;
     place-items: center;
     overflow: visible;
-    padding: var(--space-4) var(--space-4) 0;
+    padding: var(--space-2);
     background:
       radial-gradient(circle at 50% 58%, rgba(200, 230, 201, 0.86), transparent 48%),
       linear-gradient(155deg, rgba(250, 250, 245, 0.9), rgba(232, 245, 233, 0.8));
@@ -554,26 +592,26 @@ const breadcrumbSchema = {
   .menu-item__feature {
     position: absolute;
     z-index: 2;
-    top: var(--space-3);
-    left: var(--space-3);
-    padding: 0.35rem 0.65rem;
+    top: var(--space-2);
+    left: var(--space-2);
+    padding: 0.25rem 0.45rem;
     border: 1px solid rgba(53, 122, 56, 0.16);
     border-radius: var(--radius-full);
     color: var(--color-primary-dark);
     background: rgba(250, 250, 245, 0.84);
     backdrop-filter: blur(8px);
     font-family: var(--font-heading);
-    font-size: 0.68rem;
+    font-size: 0.55rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
   .menu-item__number {
     position: absolute;
     z-index: 2;
-    top: var(--space-3);
-    right: var(--space-3);
+    top: var(--space-2);
+    right: var(--space-2);
     color: rgba(33, 82, 35, 0.36);
     font-family: var(--font-heading);
     font-size: var(--text-xs);
@@ -585,16 +623,16 @@ const breadcrumbSchema = {
     position: relative;
     z-index: 1;
     width: min(100%, 300px);
-    height: 220px;
+    height: 100px;
     object-fit: contain;
-    filter: drop-shadow(0 24px 20px rgba(12, 43, 16, 0.38));
-    transform: translateY(50px) scale(1.07);
+    filter: drop-shadow(0 12px 10px rgba(12, 43, 16, 0.38));
+    transform: translateY(10px) scale(1.05);
     transition: transform 600ms var(--ease-out), filter 600ms var(--ease-out);
   }
 
   .menu-item:hover .menu-item__image {
-    transform: translateY(39px) scale(1.11) rotate(-0.5deg);
-    filter: drop-shadow(0 31px 24px rgba(10, 39, 14, 0.46));
+    transform: translateY(5px) scale(1.1) rotate(-0.5deg);
+    filter: drop-shadow(0 18px 14px rgba(10, 39, 14, 0.46));
   }
 
   .menu-item__image--wide {
@@ -606,7 +644,7 @@ const breadcrumbSchema = {
   }
 
   .menu-item__image--drink {
-    height: 230px;
+    height: 110px;
   }
 
   .menu-item__body {
@@ -615,12 +653,13 @@ const breadcrumbSchema = {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: calc(var(--space-6) + var(--space-2)) var(--space-4) var(--space-4);
+    padding: var(--space-3);
     color: var(--color-text-inverse);
     background: linear-gradient(145deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   }
 
   .menu-item__amharic {
+    display: none;
     min-height: 1.5em;
     margin-bottom: var(--space-1);
     color: var(--color-accent-light);
@@ -629,14 +668,14 @@ const breadcrumbSchema = {
 
   .menu-item__heading {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-3);
+    gap: 4px;
   }
 
   .menu-item__name {
     color: var(--color-text-inverse);
-    font-size: var(--text-xl);
+    font-size: var(--text-base);
     line-height: 1.2;
   }
 
@@ -644,7 +683,7 @@ const breadcrumbSchema = {
     flex: 0 0 auto;
     color: var(--color-accent-light);
     font-family: var(--font-heading);
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     font-weight: 700;
     line-height: 1.25;
     white-space: nowrap;
@@ -658,6 +697,7 @@ const breadcrumbSchema = {
   }
 
   .menu-item__description {
+    display: none;
     flex: 1;
     margin-top: var(--space-2);
     color: rgba(255, 255, 255, 0.74);
@@ -666,8 +706,8 @@ const breadcrumbSchema = {
   }
 
   .menu-item__footer {
+    display: none;
     min-height: 31px;
-    display: flex;
     align-items: flex-end;
     margin-top: var(--space-3);
     padding-top: var(--space-3);
@@ -704,21 +744,93 @@ const breadcrumbSchema = {
       display: inline;
     }
 
-    .menu-items-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .menu-section {
-      padding-block: var(--space-8);
+      padding-block: var(--space-5);
       scroll-margin-top: 144px;
     }
 
     .menu-section__header {
       gap: var(--space-4);
     }
+    
+    .menu-item__amharic {
+      display: block;
+    }
+    .menu-item__description {
+      display: block;
+    }
+    .menu-item__footer {
+      display: flex;
+    }
+    .menu-item__heading {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+    .menu-item__name { font-size: var(--text-xl); }
+    .menu-item__price { font-size: var(--text-lg); }
+    .menu-item__visual {
+      min-height: 250px;
+      padding: var(--space-4) var(--space-4) 0;
+    }
+    .menu-item__image {
+      height: 220px;
+      transform: translateY(50px) scale(1.07);
+    }
+    .menu-item:hover .menu-item__image {
+      transform: translateY(39px) scale(1.11) rotate(-0.5deg);
+      filter: drop-shadow(0 31px 24px rgba(10, 39, 14, 0.46));
+    }
+    .menu-item__feature {
+      top: var(--space-3);
+      left: var(--space-3);
+      padding: 0.35rem 0.65rem;
+      font-size: 0.68rem;
+    }
+    .menu-item__number {
+      top: var(--space-3);
+      right: var(--space-3);
+    }
+    .menu-item__body {
+      padding: calc(var(--space-6) + var(--space-2)) var(--space-4) var(--space-4);
+    }
+  }
+
+  .menu-section__actions {
+    display: block;
+    margin-top: var(--space-6);
+    text-align: center;
+  }
+
+  .show-less-btn {
+    display: none;
+  }
+
+  .menu-items-grid:not(.is-expanded) .menu-item:nth-child(n+5) {
+    display: none;
+  }
+
+  .menu-items-grid[data-item-count="4"]:not(.is-expanded) + .menu-section__actions {
+    display: none;
+  }
+
+  .menu-items-grid.is-expanded + .menu-section__actions .explore-more-btn {
+    display: none;
+  }
+
+  .menu-items-grid.is-expanded + .menu-section__actions .show-less-btn {
+    display: inline-block;
   }
 
   @media (min-width: 1080px) {
+    .menu-items-grid:not(.is-expanded) .menu-item:nth-child(n+4) {
+      display: none;
+    }
+
+    .menu-items-grid[data-item-count="4"]:not(.is-expanded) + .menu-section__actions {
+      display: block;
+    }
+
     .menu-items-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -787,6 +899,133 @@ const breadcrumbSchema = {
       filter: drop-shadow(0 24px 20px rgba(12, 43, 16, 0.38));
     }
   }
+  .item-modal {
+    margin: auto 0 0 0;
+    width: 100%;
+    max-width: none;
+    max-height: 90vh;
+    border: none;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    background: linear-gradient(145deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    padding: 0;
+    color: var(--color-text-inverse);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+  }
+  
+  .item-modal::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+  }
+  
+  .item-modal[open] {
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .item-modal__close {
+    position: absolute;
+    top: var(--space-4);
+    left: var(--space-4);
+    z-index: 10;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    color: var(--color-primary-dark);
+    cursor: pointer;
+  }
+  
+  .item-modal__visual {
+    position: relative;
+    padding: var(--space-6) var(--space-4) var(--space-4);
+    background: radial-gradient(circle at 50% 58%, rgba(200, 230, 201, 0.86), transparent 48%),
+                linear-gradient(155deg, rgba(250, 250, 245, 0.9), rgba(232, 245, 233, 0.8));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    isolation: isolate;
+  }
+  
+  .item-modal__visual::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 240px;
+    aspect-ratio: 1;
+    border: 1px solid rgba(53, 122, 56, 0.12);
+    border-radius: 50%;
+  }
+
+  .item-modal__number {
+    position: absolute;
+    z-index: 2;
+    top: var(--space-4);
+    right: var(--space-4);
+    color: rgba(33, 82, 35, 0.36);
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  
+  .item-modal__image {
+    width: 100%;
+    max-width: 320px;
+    height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 24px 20px rgba(12, 43, 16, 0.38));
+  }
+  
+  .item-modal__body {
+    padding: var(--space-6) var(--space-5) calc(var(--space-8) + env(safe-area-inset-bottom));
+  }
+  
+  .item-modal__amharic {
+    color: var(--color-accent-light);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-1);
+  }
+  
+  .item-modal__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+  
+  .item-modal__name {
+    font-size: var(--text-2xl);
+    line-height: 1.2;
+    color: var(--color-text-inverse);
+  }
+  
+  .item-modal__price {
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-accent-light);
+  }
+  
+  .item-modal__description {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  
+  .item-modal__tags {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
 </style>
 
 <script>
@@ -796,7 +1035,7 @@ const breadcrumbSchema = {
   const menuCards = Array.from(document.querySelectorAll<HTMLElement>('[data-menu-card]'));
   const menuGrids = Array.from(document.querySelectorAll<HTMLElement>('.menu-items-grid'));
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const finePointerQuery = window.matchMedia('(pointer: fine)');
 
   const updateCardDelays = () => {
     menuGrids.forEach((grid) => {
@@ -915,6 +1154,84 @@ const breadcrumbSchema = {
       const direction = event.key === 'ArrowRight' ? 1 : -1;
       const nextIndex = (currentIndex + direction + menuLinks.length) % menuLinks.length;
       menuLinks[nextIndex]?.focus();
+    });
+  }
+
+  const expandButtons = document.querySelectorAll<HTMLButtonElement>('[data-expand-section]');
+  expandButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const sectionId = button.dataset.expandSection;
+      const section = document.getElementById(sectionId!);
+      if (section) {
+        const grid = section.querySelector('.menu-items-grid');
+        if (grid) {
+          grid.classList.add('is-expanded');
+          updateCardDelays(); // Refresh the stagger delays for new cards
+        }
+      }
+    });
+  });
+
+  const collapseButtons = document.querySelectorAll<HTMLButtonElement>('[data-collapse-section]');
+  collapseButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const sectionId = button.dataset.collapseSection;
+      const section = document.getElementById(sectionId!);
+      if (section) {
+        const grid = section.querySelector('.menu-items-grid');
+        if (grid) {
+          grid.classList.remove('is-expanded');
+          const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          section.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+
+  const modal = document.getElementById('item-modal') as HTMLDialogElement | null;
+  const modalClose = document.getElementById('modal-close-btn');
+  
+  if (modal && modalClose) {
+    modalClose.addEventListener('click', () => modal.close());
+    
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.close();
+    });
+
+    menuCards.forEach(card => {
+      card.addEventListener('click', () => {
+        if (window.innerWidth >= 700) return;
+        
+        const name = card.dataset.itemName;
+        const amharic = card.dataset.itemAmharic;
+        const desc = card.dataset.itemDescription;
+        const price = card.dataset.itemPrice;
+        const imgSrc = card.dataset.itemImage;
+        const tags = JSON.parse(decodeURIComponent(card.dataset.itemTags || '%5B%5D'));
+        const cardOrder = Number(card.dataset.cardOrder || 0) + 1;
+        
+        document.getElementById('modal-name')!.textContent = name || '';
+        document.getElementById('modal-amharic')!.textContent = amharic || '';
+        document.getElementById('modal-description')!.textContent = desc || '';
+        document.getElementById('modal-price')!.textContent = price || '';
+        document.getElementById('modal-number')!.textContent = cardOrder.toString().padStart(2, '0');
+        
+        const modalImg = document.getElementById('modal-image') as HTMLImageElement;
+        modalImg.src = imgSrc || '';
+        modalImg.alt = name || '';
+        
+        const tagsContainer = document.getElementById('modal-tags')!;
+        tagsContainer.innerHTML = '';
+        tags.forEach((tag: string) => {
+          const li = document.createElement('li');
+          li.className = 'dietary-tag';
+          li.textContent = tag;
+          tagsContainer.appendChild(li);
+        });
+        tagsContainer.style.display = tags.length ? 'flex' : 'none';
+        
+        modal.showModal();
+      });
     });
   }
 </script>
