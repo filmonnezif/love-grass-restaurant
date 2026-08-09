@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import faqData from '../data/faq.json';
+import TractorTopView from '../components/journey/TractorTopView.astro';
 
 /* FAQ Page Schema */
 const faqSchema = {
@@ -26,14 +27,16 @@ const breadcrumbSchema = {
   ]
 };
 
-/* Teff Facts */
+/* Teff Facts (SVGs replaced emojis) */
+const getIcon = (paths) => `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+
 const teffFacts = [
-  { icon: "🌾", title: "5,000+ Years Old", desc: "Teff is one of the oldest cultivated grains, originating in the Ethiopian Highlands." },
-  { icon: "💪", title: "High in Protein", desc: "Contains all 8 essential amino acids, making it a complete protein source." },
-  { icon: "🦴", title: "Rich in Calcium", desc: "Contains more calcium per serving than most other grains — great for bone health." },
-  { icon: "🌿", title: "Naturally Gluten-Free", desc: "Safe for celiac and gluten-sensitive diets, with no compromise on taste." },
-  { icon: "⚡", title: "Iron Powerhouse", desc: "Exceptionally high in iron, traditionally used to combat anemia in Ethiopia." },
-  { icon: "🔥", title: "Low Glycemic Index", desc: "Digests slowly, providing sustained energy without blood sugar spikes." },
+  { icon: getIcon('<circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'), title: "5,000+ Years Old", desc: "Teff is one of the oldest cultivated grains, originating in the Ethiopian Highlands." },
+  { icon: getIcon('<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>'), title: "High in Protein", desc: "Contains all 8 essential amino acids, making it a complete protein source." },
+  { icon: getIcon('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'), title: "Rich in Calcium", desc: "Contains more calcium per serving than most other grains — great for bone health." },
+  { icon: getIcon('<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>'), title: "Naturally Gluten-Free", desc: "Safe for celiac and gluten-sensitive diets, with no compromise on taste." },
+  { icon: getIcon('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'), title: "Iron Powerhouse", desc: "Exceptionally high in iron, traditionally used to combat anemia in Ethiopia." },
+  { icon: getIcon('<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>'), title: "Low Glycemic Index", desc: "Digests slowly, providing sustained energy without blood sugar spikes." },
 ];
 ---
 
@@ -85,6 +88,71 @@ const teffFacts = [
     </div>
   </section>
 
+  <!-- ========== BLOG PREVIEW ========== -->
+  <section class="section blog-preview" id="blog" aria-labelledby="blog-title">
+    <div class="container">
+      <div class="text-center" data-reveal>
+        <p class="section-label">From Our Kitchen</p>
+        <h2 class="section-title" id="blog-title">Stories & Insights</h2>
+        <hr class="divider" style="margin-inline: auto;" />
+      </div>
+
+      <div class="blog-grid">
+        <a href="/journey-of-teff" class="blog-card card" data-reveal data-reveal-delay="1" style="text-decoration: none; color: inherit; display: block;">
+          <div class="blog-card__img">
+            <div class="blog-card__placeholder" style="display: flex; align-items: center; justify-content: center;">
+              <div style="width: 80px;" transition:name="journey-tractor">
+                <TractorTopView />
+              </div>
+            </div>
+          </div>
+          <div class="blog-card__body">
+            <span class="blog-card__tag">Experience</span>
+            <h3 class="blog-card__title">The Journey of Teff</h3>
+            <p class="blog-card__excerpt">
+              Follow the ancient story of Ethiopia's most sacred grain — from highland soils to the perfect injera on your plate.
+            </p>
+            <span class="blog-card__date" style="color: var(--color-primary); font-weight: 600;">Experience the Journey &rarr;</span>
+          </div>
+        </a>
+
+        <article class="blog-card card" data-reveal data-reveal-delay="2">
+          <div class="blog-card__img">
+            <div class="blog-card__placeholder">
+              <span>🌾</span>
+            </div>
+          </div>
+          <div class="blog-card__body">
+            <span class="blog-card__tag">Culture</span>
+            <h3 class="blog-card__title">The Art of Making Injera: A Centuries-Old Tradition</h3>
+            <p class="blog-card__excerpt">
+              Discover the fascinating fermentation process behind Ethiopia's iconic flatbread
+              and why it takes three days to make the perfect injera...
+            </p>
+            <span class="blog-card__date">Coming Soon</span>
+          </div>
+        </article>
+
+        <article class="blog-card card" data-reveal data-reveal-delay="3">
+          <div class="blog-card__img">
+            <div class="blog-card__placeholder">
+              <span>☕</span>
+            </div>
+          </div>
+          <div class="blog-card__body">
+            <span class="blog-card__tag">Heritage</span>
+            <h3 class="blog-card__title">The Ethiopian Coffee Ceremony: More Than Just a Drink</h3>
+            <p class="blog-card__excerpt">
+              From roasting green beans to three rounds of buna — learn about the beautiful
+              ritual that connects Ethiopian communities...
+            </p>
+            <span class="blog-card__date">Coming Soon</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- ========== TEFF FACTS ========== -->
   <section class="section teff-facts" id="teff" aria-labelledby="teff-title">
     <div class="container">
@@ -100,9 +168,11 @@ const teffFacts = [
       <div class="teff-grid">
         {teffFacts.map((fact, i) => (
           <div class="teff-card" data-reveal data-reveal-delay={String(Math.min(i + 1, 5))}>
-            <span class="teff-card__icon" aria-hidden="true">{fact.icon}</span>
-            <h3 class="teff-card__title">{fact.title}</h3>
-            <p class="teff-card__desc">{fact.desc}</p>
+            <span class="teff-card__icon" set:html={fact.icon} />
+            <div class="teff-card__content">
+              <h3 class="teff-card__title">{fact.title}</h3>
+              <p class="teff-card__desc">{fact.desc}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -136,70 +206,6 @@ const teffFacts = [
     </div>
   </section>
 
-  <!-- ========== BLOG PREVIEW ========== -->
-  <section class="section blog-preview" id="blog" aria-labelledby="blog-title">
-    <div class="container">
-      <div class="text-center" data-reveal>
-        <p class="section-label">From Our Kitchen</p>
-        <h2 class="section-title" id="blog-title">Stories & Insights</h2>
-        <hr class="divider" style="margin-inline: auto;" />
-      </div>
-
-      <div class="blog-grid">
-        <article class="blog-card card" data-reveal data-reveal-delay="1">
-          <div class="blog-card__img">
-            <div class="blog-card__placeholder">
-              <span>🌾</span>
-            </div>
-          </div>
-          <div class="blog-card__body">
-            <span class="blog-card__tag">Culture</span>
-            <h3 class="blog-card__title">The Art of Making Injera: A Centuries-Old Tradition</h3>
-            <p class="blog-card__excerpt">
-              Discover the fascinating fermentation process behind Ethiopia's iconic flatbread
-              and why it takes three days to make the perfect injera...
-            </p>
-            <span class="blog-card__date">Coming Soon</span>
-          </div>
-        </article>
-
-        <article class="blog-card card" data-reveal data-reveal-delay="2">
-          <div class="blog-card__img">
-            <div class="blog-card__placeholder">
-              <span>☕</span>
-            </div>
-          </div>
-          <div class="blog-card__body">
-            <span class="blog-card__tag">Heritage</span>
-            <h3 class="blog-card__title">The Ethiopian Coffee Ceremony: More Than Just a Drink</h3>
-            <p class="blog-card__excerpt">
-              From roasting green beans to three rounds of buna — learn about the beautiful
-              ritual that connects Ethiopian communities...
-            </p>
-            <span class="blog-card__date">Coming Soon</span>
-          </div>
-        </article>
-
-        <article class="blog-card card" data-reveal data-reveal-delay="3">
-          <div class="blog-card__img">
-            <div class="blog-card__placeholder">
-              <span>🥗</span>
-            </div>
-          </div>
-          <div class="blog-card__body">
-            <span class="blog-card__tag">Nutrition</span>
-            <h3 class="blog-card__title">Teff: The Superfood You Haven't Tried Yet</h3>
-            <p class="blog-card__excerpt">
-              Why nutrition experts are calling this ancient Ethiopian grain the next quinoa,
-              and how it can transform your diet...
-            </p>
-            <span class="blog-card__date">Coming Soon</span>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
   <!-- ========== CTA ========== -->
   <section class="section cta-section" aria-label="Visit us">
     <div class="container text-center" data-reveal>
@@ -219,8 +225,8 @@ const teffFacts = [
   /* ========== ABOUT HERO ========== */
   .about-hero {
     position: relative;
-    padding-block: calc(var(--header-height) + var(--space-8)) var(--space-8);
-    min-height: calc(40vh + var(--header-height));
+    padding-block: calc(var(--header-height) + var(--space-4)) var(--space-5);
+    min-height: calc(100px + var(--header-height));
     display: flex;
     align-items: center;
     background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
@@ -272,21 +278,38 @@ const teffFacts = [
     font-family: var(--font-accent);
   }
 
-  /* ========== TEFF FACTS ========== */
+  /* ========== TEFF FACTS (Dark Glassmorphism) ========== */
   .teff-facts {
-    background-color: var(--color-surface-alt);
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    color: var(--color-text-inverse);
+  }
+
+  .teff-facts .section-label {
+    color: var(--color-accent-light);
+  }
+
+  .teff-facts .section-title,
+  .teff-facts .section-subtitle {
+    color: var(--color-text-inverse);
+  }
+
+  .teff-facts .divider {
+    background-color: var(--color-accent-light);
+    opacity: 0.5;
   }
 
   .teff-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
     margin-top: var(--space-6);
   }
 
-  @media (min-width: 480px) {
+  @media (min-width: 600px) {
     .teff-grid {
+      display: grid;
       grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
     }
   }
 
@@ -297,22 +320,101 @@ const teffFacts = [
   }
 
   .teff-card {
-    background-color: var(--color-surface-card);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    background: rgba(0, 0, 0, 0.2) !important; /* Force dark translucent background */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: var(--radius-lg);
     padding: var(--space-4);
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-    transition: transform var(--duration-normal) var(--ease-out);
+    text-align: left;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: 
+      transform var(--duration-normal) var(--ease-out),
+      border-color var(--duration-normal) var(--ease-out),
+      box-shadow var(--duration-normal) var(--ease-out),
+      background var(--duration-normal) var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      @keyframes focus-card {
+        0%, 100% {
+          opacity: 0.35;
+          transform: scale(0.95);
+          background: rgba(0, 0, 0, 0.2) !important;
+          border-color: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        35%, 65% {
+          opacity: 1;
+          transform: scale(1) translateY(-6px);
+          background: rgba(0, 0, 0, 0.35) !important;
+          border-color: rgba(232, 184, 109, 0.4);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25), 0 0 15px rgba(232, 184, 109, 0.1);
+        }
+      }
+      
+      @keyframes focus-icon {
+        0%, 100% { transform: scale(1); }
+        35%, 65% { transform: scale(1.15); }
+      }
+
+      .teff-card {
+        view-timeline: --card-tl;
+        animation: focus-card linear both;
+        animation-timeline: --card-tl;
+      }
+      
+      .teff-card__icon {
+        animation: focus-icon linear both;
+        animation-timeline: --card-tl;
+      }
+    }
+  }
+
+  @media (min-width: 600px) {
+    .teff-card {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: none !important; /* Disable scroll focus on desktop */
+      opacity: 1 !important;
+      transform: none !important;
+    }
   }
 
   .teff-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
+    background: rgba(0, 0, 0, 0.35) !important;
+    border-color: rgba(232, 184, 109, 0.4); /* var(--color-accent-light) */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25), 0 0 15px rgba(232, 184, 109, 0.1);
   }
 
   .teff-card__icon {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: var(--space-3);
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-accent-light);
+    background: rgba(232, 184, 109, 0.1); /* Subtle gold background for mobile */
+    padding: var(--space-3);
+    border-radius: 50%;
+    transition: transform var(--duration-normal) var(--ease-out);
+  }
+
+  @media (min-width: 600px) {
+    .teff-card__icon {
+      background: transparent;
+      padding: 0;
+      margin-bottom: var(--space-3);
+    }
+  }
+
+  .teff-card:hover .teff-card__icon {
+    transform: scale(1.15);
   }
 
   .teff-card__title {
@@ -320,12 +422,13 @@ const teffFacts = [
     font-size: var(--text-lg);
     font-weight: 600;
     margin-bottom: var(--space-2);
+    color: var(--color-text-inverse);
   }
 
   .teff-card__desc {
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
   }
 
   /* ========== FAQ ========== */
@@ -400,15 +503,39 @@ const teffFacts = [
   }
 
   .blog-grid {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     gap: var(--space-4);
     margin-top: var(--space-6);
+    padding-bottom: var(--space-4);
+    /* Full bleed pull-out */
+    padding-inline: var(--space-4);
+    margin-inline: calc(var(--space-4) * -1);
+    scrollbar-width: none;
+  }
+  
+  .blog-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .blog-card {
+    flex: 0 0 82%;
+    scroll-snap-align: center;
   }
 
   @media (min-width: 768px) {
     .blog-grid {
+      display: grid;
       grid-template-columns: repeat(2, 1fr);
+      overflow-x: visible;
+      padding-inline: 0;
+      margin-inline: 0;
+    }
+    
+    .blog-card {
+      flex: auto;
+      scroll-snap-align: none;
     }
   }
 

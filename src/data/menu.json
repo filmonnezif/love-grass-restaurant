@@ -145,6 +145,17 @@
           "image": "sambusa.png",
           "tags": [],
           "dietary": []
+        },
+        {
+          "id": "sambusa-2",
+          "name": "Sambusa (Meat)",
+          "nameAmharic": "የስጋ ሳምቡሳ",
+          "description": "Crispy pastry filled with spiced meat",
+          "price": 14,
+          "currency": "AED",
+          "image": "sambusa.png",
+          "tags": [],
+          "dietary": []
         }
       ]
     },
@@ -185,6 +196,17 @@
           "currency": "AED",
           "image": "spris.png",
           "tags": ["popular"],
+          "dietary": ["vegan"]
+        },
+        {
+          "id": "fresh-juice-2",
+          "name": "Mango Juice",
+          "nameAmharic": "የማንጎ ጭማቂ",
+          "description": "Freshly squeezed mango juice",
+          "price": 15,
+          "currency": "AED",
+          "image": "spris.png",
+          "tags": [],
           "dietary": ["vegan"]
         }
       ]

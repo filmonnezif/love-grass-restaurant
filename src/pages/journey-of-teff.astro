@@ -1,0 +1,777 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import TractorTopView from '../components/journey/TractorTopView.astro';
+import AsphaltRoad from '../components/journey/AsphaltRoad.astro';
+
+const STATIONS = [
+  {
+    id: 1,
+    step: "01",
+    side: "right", // video RIGHT → tractor LEFT
+    title: "From the Land",
+    amharic: "ከምድር",
+    description: "High in the Ethiopian highlands — at elevations of 1,800–2,200 metres — teff grass grows where few crops dare. The ancient grain has nourished these lands for over 3,000 years, its delicate stalks swaying in the highland breeze, roots gripping volcanic red soil.",
+    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1200",
+    imageAlt: "Vast teff fields stretching across the Ethiopian highlands at sunset",
+  },
+  {
+    id: 2,
+    step: "02",
+    side: "left", // video LEFT → tractor RIGHT
+    title: "Plowing the Land",
+    amharic: "መሬት ማረስ",
+    description: "Before the rains arrive, the farmer walks his fields with a traditional ard plough pulled by oxen — a practice unchanged for millennia. The earth is turned, aerated, and prepared to receive the finest grain. This ritual bond between farmer and soil is what makes teff truly sacred.",
+    image: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&q=80&w=1200",
+    imageAlt: "Ethiopian farmer preparing the fields with traditional plowing methods",
+  },
+  {
+    id: 3,
+    step: "03",
+    side: "right",
+    title: "Sowing in the Rains",
+    amharic: "ዘር መዝራት",
+    description: "When the kiremt rains sweep in each June, seeds are broadcast by hand across the fertile earth. Teff seeds are extraordinarily small — a thousand weigh less than a gram — yet from these tiny specks springs Ethiopia's most nourishing gift to the world.",
+    image: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&q=80&w=1200",
+    imageAlt: "Teff seeds being sown in rain-soaked Ethiopian farmland",
+  },
+  {
+    id: 4,
+    step: "04",
+    side: "left",
+    title: "The Harvest",
+    amharic: "መከር",
+    description: "Three to four months after sowing, teff is harvested at dawn. Stalks are cut and threshed by hand, then winnowed in the highland breeze that separates precious grain from chaff. Each family treasures this moment — the culmination of an entire season's devotion.",
+    image: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80&w=1200",
+    imageAlt: "Teff grain being harvested and winnowed in the Ethiopian countryside",
+  },
+  {
+    id: 5,
+    step: "05",
+    side: "right",
+    title: "Baking the Injera",
+    amharic: "እንጀራ መጋገር",
+    description: "The teff is stone-milled, mixed with water, and fermented for 48–72 hours — developing the complex, slightly sour character that defines injera. On a wide clay mitad griddle over open fire, the batter is poured in a spiral and baked into the world's most perfect communal bread.",
+    image: "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&q=80&w=1200",
+    imageAlt: "Injera being baked on a traditional Ethiopian clay mitad griddle",
+  },
+];
+
+const STATION_H = 680;
+---
+
+<BaseLayout
+  title="The Journey of Teff | Love Grass Restaurant"
+  description="Follow the ancient story of Ethiopia's most sacred grain — from highland soils to the perfect injera on your plate."
+>
+  <section id="teff-journey" class="journey-section">
+    <!-- Mesob overlay pattern (if available, otherwise fallback to subtle gradient) -->
+    <div class="journey-section__pattern" aria-hidden="true"></div>
+
+    <!-- Section Header -->
+    <div class="journey-header container text-center">
+      <p lang="am" aria-label="The story of teff in Amharic" class="journey-header__amharic">
+        የጤፍ ጉዞ
+      </p>
+      <h1 class="journey-header__title">
+        The Journey of <em>Teff</em>
+      </h1>
+      <p class="journey-header__subtitle">
+        From highland soil to your table — five chapters of an ancient story that began 3,000 years ago in Ethiopia.
+      </p>
+      <div class="journey-header__divider" aria-hidden="true">
+        <span class="line"></span>
+        <span class="dot"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+
+    <!-- DESKTOP TIMELINE (Visible >= 1024px) -->
+    <div class="timeline timeline--desktop" id="timeline-desktop" style={`min-height: ${STATIONS.length * STATION_H}px;`}>
+      <AsphaltRoad />
+
+      {STATIONS.map((station, i) => {
+        const videoOnRight = station.side === "right";
+        return (
+          <div class="station-row" style={`min-height: ${STATION_H}px;`}>
+            {videoOnRight ? (
+              <Fragment>
+                <div class="station-row__empty"></div>
+                <div class="station-row__content station-row__content--left">
+                  <div class="station-card" data-station-index={i}>
+                    <div class="story-frame">
+                      <Image src={station.image} alt={station.imageAlt} width={800} height={450} class="story-frame__img" />
+                      <div class="story-frame__overlay"></div>
+                      <div class="story-frame__play">
+                        <div class="story-frame__play-btn">
+                          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                        </div>
+                      </div>
+                      <div class="story-frame__badge">
+                        <span class="dot"></span> Step {station.step}
+                      </div>
+                      <div class="story-frame__coming-soon">Video Coming Soon</div>
+                    </div>
+                    <div class="station-card__text text-left">
+                      <h3 class="station-card__title">{station.title}</h3>
+                      <p lang="am" class="station-card__amharic">{station.amharic}</p>
+                      <p class="station-card__desc">{station.description}</p>
+                    </div>
+                  </div>
+                </div>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <div class="station-row__content station-row__content--right">
+                  <div class="station-card" data-station-index={i}>
+                    <div class="story-frame">
+                      <Image src={station.image} alt={station.imageAlt} width={800} height={450} class="story-frame__img" />
+                      <div class="story-frame__overlay"></div>
+                      <div class="story-frame__play">
+                        <div class="story-frame__play-btn">
+                          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                        </div>
+                      </div>
+                      <div class="story-frame__badge">
+                        <span class="dot"></span> Step {station.step}
+                      </div>
+                      <div class="story-frame__coming-soon">Video Coming Soon</div>
+                    </div>
+                    <div class="station-card__text text-right">
+                      <h3 class="station-card__title">{station.title}</h3>
+                      <p lang="am" class="station-card__amharic">{station.amharic}</p>
+                      <p class="station-card__desc">{station.description}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="station-row__empty"></div>
+              </Fragment>
+            )}
+          </div>
+        );
+      })}
+
+      <!-- Tractor (CSS offset-path) -->
+      <div id="tractor-desktop" class="tractor-desktop" aria-hidden="true">
+        <div class="tractor-desktop__inner">
+          <TractorTopView idSuffix="-desktop" />
+        </div>
+      </div>
+    </div>
+
+    <!-- MOBILE TIMELINE (Visible < 1024px) -->
+    <div class="timeline timeline--mobile container">
+      <div class="mobile-track" aria-hidden="true"></div>
+      
+      <!-- Mobile Tractor -->
+      <div id="tractor-mobile" class="tractor-mobile" aria-hidden="true">
+        <TractorTopView idSuffix="-mobile" />
+      </div>
+
+      {STATIONS.map((station, i) => (
+        <div class="mobile-station" data-station-index={i}>
+          <div class="mobile-station__marker" aria-hidden="true">
+            <span class="step">{station.step}</span>
+            <div class="dot"></div>
+          </div>
+          
+          <div class="station-card">
+            <div class="story-frame">
+              <Image src={station.image} alt={station.imageAlt} width={600} height={337} class="story-frame__img" />
+              <div class="story-frame__overlay"></div>
+              <div class="story-frame__play">
+                <div class="story-frame__play-btn">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                </div>
+              </div>
+              <div class="story-frame__badge">
+                <span class="dot"></span> Step {station.step}
+              </div>
+            </div>
+            <div class="station-card__text mt-4">
+              <h3 class="station-card__title">{station.title}</h3>
+              <p lang="am" class="station-card__amharic">{station.amharic}</p>
+              <p class="station-card__desc">{station.description}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* 
+    Force the header to retain its dark/inverse theme when scrolled, 
+    since this entire page has a dark background.
+  */
+  :global(.site-header.scrolled) {
+    background-color: rgba(33, 82, 35, 0.94) !important; /* var(--color-primary-dark) with opacity */
+    border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+  }
+  :global(.site-header.scrolled .site-logo__text) {
+    color: var(--color-text-inverse) !important;
+  }
+  :global(.site-header.scrolled .nav-toggle__bar) {
+    background-color: var(--color-text-inverse) !important;
+  }
+  :global(.site-header.scrolled .nav-toggle:hover),
+  :global(.site-header.scrolled .nav-toggle:focus-visible) {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  @media (min-width: 768px) {
+    :global(.site-header.scrolled .nav-link) {
+      color: rgba(255, 255, 255, 0.88) !important;
+    }
+    :global(.site-header.scrolled .nav-link:hover),
+    :global(.site-header.scrolled .nav-link:focus-visible) {
+      color: var(--color-text-inverse) !important;
+      background-color: rgba(255, 255, 255, 0.12) !important;
+    }
+    :global(.site-header.scrolled .nav-link.active) {
+      color: var(--color-accent-light) !important;
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+  
+  :global(.site-header.scrolled .site-logo__text),
+  :global(.site-header.scrolled .nav-link) {
+    color: var(--color-text-inverse) !important;
+  }
+  
+  :global(.site-header.scrolled .nav-toggle__bar) {
+    background-color: var(--color-text-inverse) !important;
+  }
+  
+  :global(.site-header.scrolled .nav-link:hover),
+  :global(.site-header.scrolled .nav-link:focus-visible) {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  
+  :global(.site-header.scrolled .nav-link.active) {
+    color: var(--color-accent-light) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .journey-section {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-8);
+    background: linear-gradient(180deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    color: var(--color-text-inverse);
+  }
+
+  .journey-section__pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.1;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  .journey-header {
+    position: relative;
+    z-index: 10;
+    margin-bottom: var(--space-7);
+    max-width: 800px;
+  }
+
+  .journey-header__amharic {
+    color: var(--color-accent-light);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+  }
+
+  .journey-header__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-5xl);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--color-text-inverse);
+    margin-bottom: var(--space-4);
+  }
+
+  .journey-header__title em {
+    color: var(--color-accent-light);
+    font-style: italic;
+    font-family: var(--font-accent);
+  }
+
+  .journey-header__subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    max-width: 36rem;
+    margin-inline: auto;
+  }
+
+  .journey-header__divider {
+    margin-top: var(--space-5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  .journey-header__divider .line {
+    height: 1px;
+    width: 3rem;
+    background: rgba(212, 148, 58, 0.3); /* brand-gold/30 */
+  }
+
+  .journey-header__divider .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(212, 148, 58, 0.5);
+  }
+
+  /* ========== TIMELINE LAYOUTS ========== */
+  
+  .timeline--desktop {
+    display: none;
+  }
+  
+  @media (min-width: 1024px) {
+    .timeline--mobile { display: none; }
+    .timeline--desktop {
+      display: block;
+      position: relative;
+    }
+    .tractor-desktop__inner {
+      view-transition-name: journey-tractor;
+    }
+  }
+
+  /* Desktop Rows */
+  .station-row {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+  }
+
+  .station-row__empty {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .station-row__content {
+    width: 42%;
+    padding-inline: var(--space-5);
+  }
+
+  .station-row__content--left { padding-right: 3.5rem; }
+  .station-row__content--right { padding-left: 3.5rem; }
+
+  /* Station Card Animations */
+  .station-card {
+    width: 100%;
+    transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
+    opacity: 0.25;
+    transform: translateY(24px);
+  }
+  .station-card.is-active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .station-card__text {
+    margin-top: var(--space-4);
+  }
+  .station-card__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text-inverse);
+  }
+  .station-card__amharic {
+    margin-top: var(--space-1);
+    color: rgba(212, 148, 58, 0.55);
+    font-size: var(--text-sm);
+    letter-spacing: 0.05em;
+  }
+  .station-card__desc {
+    margin-top: var(--space-3);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    max-width: 28rem;
+  }
+  .text-left .station-card__desc { margin-right: auto; }
+  .text-right .station-card__desc { margin-left: auto; }
+
+  /* Story Frame (Video Placeholder) */
+  .story-frame {
+    position: relative;
+    aspect-ratio: 16/9;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.65);
+    box-shadow: 0 0 0 1px rgba(212, 148, 58, 0.2); /* ring-brand-gold/20 */
+  }
+
+  .story-frame__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms var(--ease-out);
+  }
+  .story-frame:hover .story-frame__img {
+    transform: scale(1.05);
+  }
+
+  .story-frame__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.1) 50%, transparent);
+  }
+
+  .story-frame__play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .story-frame__play-btn {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 300ms, background 300ms;
+  }
+  .story-frame:hover .story-frame__play-btn {
+    transform: scale(1.1);
+    background: rgba(255,255,255,0.3);
+  }
+  .story-frame__play-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    margin-left: 4px;
+  }
+
+  .story-frame__badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .story-frame__badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-light);
+  }
+
+  .story-frame__coming-soon {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(212, 148, 58, 0.9);
+    color: #111;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-full);
+  }
+
+  /* Desktop Tractor */
+  .tractor-desktop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    pointer-events: none;
+    offset-path: none; /* Set by JS */
+    offset-distance: var(--tractor-progress, 0%);
+    offset-rotate: auto;
+    transition: offset-distance 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .tractor-desktop__inner {
+    /* The offset-path property automatically centers the element via offset-anchor, 
+       so no additional translation is needed here. */
+  }
+
+  /* ========== MOBILE LAYOUT ========== */
+  @media (max-width: 1023px) {
+    .tractor-mobile {
+      view-transition-name: journey-tractor;
+    }
+  }
+
+  .timeline--mobile {
+    position: relative;
+    padding-left: 3.5rem;
+    padding-right: var(--space-3);
+  }
+
+  .mobile-track {
+    position: absolute;
+    left: var(--space-4);
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    background: #181818; /* Asphalt color */
+    border-left: 2px solid rgba(255,255,255,0.22);
+    border-right: 2px solid rgba(255,255,255,0.22);
+    border-radius: 4px;
+    margin-left: -11px; /* Center exactly over the old 2px line */
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+  }
+  
+  .mobile-track::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(to bottom, rgba(240,230,160,0.78) 0, rgba(240,230,160,0.78) 16px, transparent 16px, transparent 32px);
+    transform: translateX(-50%);
+  }
+
+  .tractor-mobile {
+    position: absolute;
+    left: var(--space-4);
+    z-index: 20;
+    pointer-events: none;
+    top: var(--tractor-progress, 0%);
+    width: 130px;
+    height: 68px;
+    transform: translate(-50%, -50%) rotate(90deg) scale(0.6);
+    transition: top 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (max-width: 1023px) {
+    .tractor-mobile {
+      view-transition-name: journey-tractor;
+    }
+  }
+
+  .mobile-station {
+    position: relative;
+    margin-bottom: var(--space-7);
+  }
+  .mobile-station:last-child { margin-bottom: 0; }
+
+  .mobile-station__marker {
+    position: absolute;
+    left: -2rem;
+    top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transform: translateX(-50%);
+  }
+  .mobile-station__marker .step {
+    color: rgba(212, 148, 58, 0.5);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+  }
+  .mobile-station__marker .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid rgba(212, 148, 58, 0.5);
+    background: var(--color-primary-dark);
+  }
+</style>
+
+<script>
+  // Shared Configuration
+  const STATION_H = 680;
+  const STATIONS_COUNT = 5;
+
+  let cleanup = null;
+
+  // Wait for DOM to be ready (compatible with Astro View Transitions)
+  document.addEventListener('astro:page-load', () => {
+    const section = document.getElementById('teff-journey');
+    if (!section) return; // Not on the journey page
+
+    if (cleanup) cleanup();
+
+    const timelineDesktop = document.getElementById('timeline-desktop');
+    const roadSvg = document.getElementById('asphalt-road-svg');
+    const roadPaths = roadSvg ? Array.from(roadSvg.querySelectorAll('.road-path')) : [];
+    const tractorDesktop = document.getElementById('tractor-desktop');
+    const tractorMobile = document.getElementById('tractor-mobile');
+    const stationCards = Array.from(document.querySelectorAll('.station-card, .mobile-station'));
+
+    // --- Path Builder ---
+    function buildRoadPath(w, h) {
+      if (w < 10 || h < 10) return "";
+
+      const lx = w * 0.23;
+      const rx = w * 0.77;
+      
+      const getPx = (i) => (i % 2 === 0 ? lx : rx);
+      const ys = Array.from({length: STATIONS_COUNT}, (_, i) => i * STATION_H + STATION_H / 2);
+      const f = (n) => n.toFixed(1);
+
+      let d = `M ${f(-50)},${f(-100)}`;
+      d += ` C ${f(getPx(0) * 0.2)},${f(-50)} ${f(getPx(0))},${f(ys[0] * 0.4)} ${f(getPx(0))},${f(ys[0])}`;
+
+      for (let i = 0; i < STATIONS_COUNT - 1; i++) {
+        const x0 = getPx(i);
+        const x1 = getPx(i + 1);
+        const y0 = ys[i];
+        const y1 = ys[i + 1];
+
+        const gap = y1 - y0;
+        const ctrlDist = gap * 0.42;
+        const cp1Y = y0 + ctrlDist;
+        const cp2Y = y1 - ctrlDist;
+
+        d += ` C ${f(x0)},${f(cp1Y)} ${f(x1)},${f(cp2Y)} ${f(x1)},${f(y1)}`;
+      }
+
+      const lastX = getPx(STATIONS_COUNT - 1);
+      const lastY = ys[STATIONS_COUNT - 1];
+      d += ` C ${f(lastX)},${f(lastY + 300)} ${f(w + 100)},${f(lastY + 400)} ${f(w + 100)},${f(h + 200)}`;
+
+      return d;
+    }
+
+    // --- Resize Logic ---
+    let lastW = 0;
+    const handleResize = () => {
+      if (!timelineDesktop || !roadSvg || !tractorDesktop) return;
+      const w = timelineDesktop.offsetWidth;
+      const h = timelineDesktop.offsetHeight;
+      
+      if (Math.abs(w - lastW) < 5) return;
+      lastW = w;
+
+      if (w > 10 && h > 10) {
+        roadSvg.style.width = `${w}px`;
+        roadSvg.style.height = `${h}px`;
+        const d = buildRoadPath(w, h);
+        roadPaths.forEach(path => path.setAttribute('d', d));
+        tractorDesktop.style.offsetPath = `path("${d}")`;
+      }
+    };
+
+    let ro = null;
+    const onResizeWrap = () => requestAnimationFrame(handleResize);
+    
+    if (timelineDesktop && window.ResizeObserver) {
+      ro = new ResizeObserver(onResizeWrap);
+      ro.observe(timelineDesktop);
+    } else {
+      window.addEventListener('resize', onResizeWrap);
+    }
+    
+    requestAnimationFrame(handleResize);
+
+    // --- Scroll Logic ---
+    let ticking = false;
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const total = section.offsetHeight - window.innerHeight;
+      
+      if (total > 0) {
+        const progress = Math.max(0, Math.min(1, -rect.top / total));
+        const tractorPct = 5 + (progress * 87);
+
+        if (tractorDesktop) tractorDesktop.style.setProperty('--tractor-progress', `${tractorPct}%`);
+        if (tractorMobile) tractorMobile.style.setProperty('--tractor-progress', `${tractorPct}%`);
+
+        // Only use this global progress logic for Desktop cards.
+        // Mobile cards are handled by IntersectionObserver below for dynamic heights.
+        const activeIdx = Math.min(STATIONS_COUNT - 1, Math.floor(progress * STATIONS_COUNT));
+        const desktopCards = Array.from(document.querySelectorAll('.timeline--desktop .station-card'));
+        desktopCards.forEach(card => {
+          const idx = parseInt(card.getAttribute('data-station-index') || '0', 10);
+          if (idx === activeIdx) {
+            card.classList.add('is-active');
+          } else {
+            card.classList.remove('is-active');
+          }
+        });
+      }
+      ticking = false;
+    };
+
+    const onScrollWrap = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(handleScroll);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScrollWrap, { passive: true });
+    setTimeout(handleScroll, 100);
+
+    // --- Mobile Cards Intersection Observer ---
+    let mobileObserver = null;
+    if (window.IntersectionObserver) {
+      mobileObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.querySelector('.station-card')?.classList.add('is-active');
+          } else {
+            entry.target.querySelector('.station-card')?.classList.remove('is-active');
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: "-25% 0px -25% 0px", // Trigger when card reaches middle 50% of screen
+        threshold: 0
+      });
+
+      document.querySelectorAll('.mobile-station').forEach(station => {
+        mobileObserver.observe(station);
+      });
+    }
+
+    // --- Cleanup ---
+    cleanup = () => {
+      window.removeEventListener('scroll', onScrollWrap);
+      if (ro) {
+        ro.disconnect();
+      } else {
+        window.removeEventListener('resize', onResizeWrap);
+      }
+      if (mobileObserver) {
+        mobileObserver.disconnect();
+      }
+    };
+  });
+
+  document.addEventListener('astro:before-swap', () => {
+    if (cleanup) {
+      cleanup();
+      cleanup = null;
+    }
+  });
+</script>
