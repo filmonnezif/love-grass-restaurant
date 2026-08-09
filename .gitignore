@@ -24,6 +24,9 @@ pnpm-debug.log*
 
 # cache & temporary files
 .*-cache.md
+# These reviewed guidance documents are shared project inputs, not disposable caches.
+!.scroll-guidance-cache.md
+!.web-guidance-cache.md
 *.log
 
 # raw root assets
