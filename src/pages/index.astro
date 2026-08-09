@@ -141,6 +141,8 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
         </div>
       </div>
     </div>
+
+    <div class="hero__grain-field" aria-hidden="true"></div>
   </section>
 
   <!-- ========== FEATURED PRODUCTS ========== -->
@@ -396,41 +398,46 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
       linear-gradient(145deg, var(--color-primary) 0%, var(--color-primary-dark) 78%);
   }
 
-  .hero::before {
-    content: '';
+  .hero__grain-field {
     position: absolute;
-    z-index: 0;
+    z-index: 1;
     inset: 0;
-    background:
-      radial-gradient(ellipse 4px 10px at 5% 14%, rgba(232, 184, 109, 0.3) 0 46%, transparent 56%),
-      radial-gradient(ellipse 10px 4px at 14% 7%, rgba(200, 230, 201, 0.22) 0 46%, transparent 56%),
-      radial-gradient(ellipse 5px 12px at 24% 19%, rgba(232, 184, 109, 0.24) 0 46%, transparent 56%),
-      radial-gradient(ellipse 11px 4px at 35% 9%, rgba(200, 230, 201, 0.2) 0 46%, transparent 56%),
-      radial-gradient(ellipse 4px 11px at 47% 17%, rgba(232, 184, 109, 0.28) 0 46%, transparent 56%),
-      radial-gradient(ellipse 10px 4px at 59% 6%, rgba(200, 230, 201, 0.2) 0 46%, transparent 56%),
-      radial-gradient(ellipse 5px 11px at 70% 20%, rgba(232, 184, 109, 0.24) 0 46%, transparent 56%),
-      radial-gradient(ellipse 11px 4px at 83% 9%, rgba(200, 230, 201, 0.22) 0 46%, transparent 56%),
-      radial-gradient(ellipse 4px 10px at 95% 22%, rgba(232, 184, 109, 0.3) 0 46%, transparent 56%),
-      radial-gradient(ellipse 10px 4px at 9% 32%, rgba(200, 230, 201, 0.18) 0 46%, transparent 56%),
-      radial-gradient(ellipse 4px 10px at 29% 29%, rgba(232, 184, 109, 0.22) 0 46%, transparent 56%),
-      radial-gradient(ellipse 10px 4px at 42% 35%, rgba(200, 230, 201, 0.18) 0 46%, transparent 56%),
-      radial-gradient(ellipse 4px 11px at 64% 30%, rgba(232, 184, 109, 0.2) 0 46%, transparent 56%),
-      radial-gradient(ellipse 11px 4px at 77% 36%, rgba(200, 230, 201, 0.16) 0 46%, transparent 56%),
-      radial-gradient(ellipse 5px 11px at 92% 31%, rgba(232, 184, 109, 0.22) 0 46%, transparent 56%);
-    opacity: 0.72;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.82) 38%, transparent 76%);
-    mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.82) 38%, transparent 76%);
+    overflow: hidden;
     pointer-events: none;
   }
 
   .hero__layout {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     min-height: inherit;
     display: grid;
     grid-template-rows: minmax(260px, 38svh) auto;
     align-items: center;
     padding-block: calc(var(--header-height) + var(--space-3)) var(--space-6);
+  }
+
+  :global(.hero__grain-particle) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  :global(.hero__grain) {
+    display: block;
+    width: var(--grain-width);
+    height: var(--grain-height);
+    border-radius: 72% 28% 72% 28%;
+    background: var(--grain-color);
+    filter: blur(0.15px) brightness(1.08) saturate(1.08);
+    animation: hero-grain-drift var(--drift-duration) var(--ease-in-out) var(--drift-delay) infinite alternate backwards;
+  }
+
+  @keyframes hero-grain-drift {
+    0% { transform: translate3d(0, 0, 0) rotate(var(--grain-rotation)); }
+    50% { transform: translate3d(-6px, -8px, 0) rotate(calc(var(--grain-rotation) - 6deg)); }
+    100% { transform: translate3d(8px, 10px, 0) rotate(calc(var(--grain-rotation) + 14deg)); }
   }
 
   .hero__visual {
@@ -541,10 +548,6 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
   }
 
   @media (max-width: 420px) {
-    .hero::before {
-      opacity: 0.48;
-    }
-
     .hero__layout {
       grid-template-rows: minmax(230px, 36svh) auto;
       padding-inline: var(--space-3);
@@ -564,6 +567,18 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
       border: 0;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .hero__grain-field {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__grain-field {
+      display: none;
     }
   }
 
@@ -1984,6 +1999,9 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
     try {
       const { DotLottie } = await import('@lottiefiles/dotlottie-web');
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const hero = container.closest<HTMLElement>('.hero');
+      const visual = container.closest<HTMLElement>('.hero__visual');
+      const grainField = hero?.querySelector<HTMLElement>('.hero__grain-field');
 
       const canvas = document.createElement('canvas');
       canvas.setAttribute('aria-hidden', 'true');
@@ -1996,6 +2014,198 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
         loop: false,
         layout: { fit: 'contain', align: [0.5, 0.65] },
       });
+
+      if (
+        !reduceMotion
+        && window.matchMedia('(min-width: 900px)').matches
+        && hero
+        && visual
+        && grainField
+      ) {
+        const emissionFrames = [636, 644, 652, 660];
+        const grains = [
+          { x: 0.06, y: 0.1, w: 4, h: 10, r: -14, d: 6.2, c: 'rgba(232, 184, 109, 0.3)' },
+          { x: 0.94, y: 0.14, w: 10, h: 4, r: 12, d: 6.8, c: 'rgba(200, 230, 201, 0.22)' },
+          { x: 0.17, y: 0.24, w: 3, h: 9, r: 18, d: 7.1, c: 'rgba(232, 184, 109, 0.24)' },
+          { x: 0.83, y: 0.27, w: 9, h: 3, r: -10, d: 6.4, c: 'rgba(200, 230, 201, 0.2)' },
+          { x: 0.3, y: 0.07, w: 5, h: 11, r: -18, d: 6.7, c: 'rgba(232, 184, 109, 0.26)' },
+          { x: 0.7, y: 0.18, w: 11, h: 4, r: 16, d: 7.3, c: 'rgba(200, 230, 201, 0.18)' },
+          { x: 0.1, y: 0.4, w: 4, h: 10, r: 10, d: 7.4, c: 'rgba(232, 184, 109, 0.28)' },
+          { x: 0.9, y: 0.42, w: 10, h: 4, r: -16, d: 6.9, c: 'rgba(200, 230, 201, 0.2)' },
+          { x: 0.23, y: 0.5, w: 3, h: 8, r: -12, d: 6.5, c: 'rgba(232, 184, 109, 0.22)' },
+          { x: 0.77, y: 0.54, w: 9, h: 3, r: 14, d: 7.6, c: 'rgba(200, 230, 201, 0.18)' },
+          { x: 0.37, y: 0.31, w: 5, h: 12, r: 20, d: 7.2, c: 'rgba(232, 184, 109, 0.26)' },
+          { x: 0.63, y: 0.36, w: 11, h: 4, r: -18, d: 6.6, c: 'rgba(200, 230, 201, 0.2)' },
+          { x: 0.05, y: 0.66, w: 4, h: 11, r: -16, d: 7.8, c: 'rgba(232, 184, 109, 0.24)' },
+          { x: 0.95, y: 0.64, w: 10, h: 4, r: 18, d: 7.1, c: 'rgba(200, 230, 201, 0.2)' },
+          { x: 0.18, y: 0.74, w: 3, h: 9, r: 12, d: 6.8, c: 'rgba(232, 184, 109, 0.28)' },
+          { x: 0.82, y: 0.77, w: 9, h: 3, r: -14, d: 7.5, c: 'rgba(200, 230, 201, 0.18)' },
+          { x: 0.31, y: 0.61, w: 5, h: 11, r: -20, d: 7.3, c: 'rgba(232, 184, 109, 0.24)' },
+          { x: 0.69, y: 0.69, w: 11, h: 4, r: 16, d: 6.7, c: 'rgba(200, 230, 201, 0.2)' },
+          { x: 0.11, y: 0.86, w: 4, h: 10, r: 14, d: 7.6, c: 'rgba(232, 184, 109, 0.26)' },
+          { x: 0.89, y: 0.87, w: 10, h: 4, r: -12, d: 7.9, c: 'rgba(200, 230, 201, 0.18)' },
+          { x: 0.27, y: 0.91, w: 3, h: 9, r: -18, d: 7.2, c: 'rgba(232, 184, 109, 0.22)' },
+          { x: 0.73, y: 0.9, w: 9, h: 3, r: 20, d: 6.9, c: 'rgba(200, 230, 201, 0.2)' },
+          { x: 0.42, y: 0.78, w: 5, h: 12, r: 10, d: 7.7, c: 'rgba(232, 184, 109, 0.28)' },
+          { x: 0.58, y: 0.82, w: 11, h: 4, r: -16, d: 7.4, c: 'rgba(200, 230, 201, 0.18)' },
+        ];
+        let nextEmission = 0;
+        const clusterOrigins: Record<'left' | 'right', Array<{ x: number; y: number }>> = {
+          left: [],
+          right: [],
+        };
+
+        const emitGrain = (
+          grain: typeof grains[number],
+          index: number,
+          destinationXRatio = grain.x,
+          destinationYRatio = grain.y,
+        ) => {
+          const heroBounds = hero.getBoundingClientRect();
+          const visualBounds = visual.getBoundingClientRect();
+          const centerX = visualBounds.left - heroBounds.left + visualBounds.width * 0.5;
+          const centerY = visualBounds.top - heroBounds.top + visualBounds.height * 0.58;
+          const clusterSide = destinationXRatio < 0.5 ? -1 : 1;
+          const clusterKey = clusterSide < 0 ? 'left' : 'right';
+          const existingOrigins = clusterOrigins[clusterKey];
+          const minimumSpacing = Math.max(14, Math.min(24, visualBounds.width * 0.025));
+          let originX = centerX + clusterSide * visualBounds.width * 0.16;
+          let originY = centerY;
+
+          for (let attempt = 0; attempt < 24; attempt += 1) {
+            const candidateX = centerX
+              + clusterSide * visualBounds.width * 0.16
+              + (Math.random() - 0.5) * visualBounds.width * 0.28;
+            const candidateY = centerY + (Math.random() - 0.5) * visualBounds.height * 0.28;
+            const hasSpace = existingOrigins.every(({ x, y }) => (
+              Math.hypot(candidateX - x, candidateY - y) >= minimumSpacing
+            ));
+
+            if (hasSpace || attempt === 23) {
+              originX = candidateX;
+              originY = candidateY;
+              break;
+            }
+          }
+          existingOrigins.push({ x: originX, y: originY });
+          const rightBoundary = clusterSide > 0 ? 0.9 : 0.94;
+          const configuredDestinationX = heroBounds.width * Math.min(
+            rightBoundary,
+            Math.max(0.06, destinationXRatio),
+          );
+          const configuredDestinationY = heroBounds.height * Math.min(0.9, Math.max(0.08, destinationYRatio));
+          const travelX = configuredDestinationX - originX;
+          const travelY = configuredDestinationY - originY;
+          const travelDistance = Math.max(1, Math.hypot(travelX, travelY));
+          const desktopRightArc = clusterSide > 0
+            ? (index % 2 === 0 ? -1 : 1) * visualBounds.height * (0.07 + (index % 3) * 0.015)
+            : 0;
+          const clampY = (value: number) => Math.min(
+            heroBounds.height * 0.9,
+            Math.max(heroBounds.height * 0.08, value),
+          );
+          const journeyDuration = Math.min(15000, Math.max(6500, travelDistance / 55 * 1000));
+          const particle = document.createElement('span');
+          const grainShape = document.createElement('span');
+
+          particle.className = 'hero__grain-particle';
+          grainShape.className = 'hero__grain';
+          particle.style.setProperty('--grain-width', `${grain.w * 1.45}px`);
+          particle.style.setProperty('--grain-height', `${grain.h * 1.45}px`);
+          particle.style.setProperty('--grain-rotation', `${grain.r}deg`);
+          particle.style.setProperty('--drift-duration', `${grain.d}s`);
+          particle.style.setProperty('--drift-delay', `${journeyDuration}ms`);
+          const grainColor = index % 3 === 0
+            ? '#f2c15b'
+            : index % 3 === 1
+              ? '#eab34b'
+              : '#f0bb52';
+          particle.style.setProperty('--grain-color', grainColor);
+          particle.appendChild(grainShape);
+          grainField.appendChild(particle);
+
+          const fixedSampleTimes = [0, 50, 100, 200, 400, 700, 1200, 2000, 3600];
+          const evenlySpacedTimes = Array.from(
+            { length: 21 },
+            (_, sampleIndex) => journeyDuration * sampleIndex / 20,
+          );
+          const sampleTimes = Array.from(new Set([
+            ...fixedSampleTimes.filter(time => time <= journeyDuration),
+            ...evenlySpacedTimes,
+          ])).sort((a, b) => a - b);
+          const fastProgressDenominator = 1 - Math.exp(-journeyDuration / 250);
+          const journeyFrames = sampleTimes.map((elapsed) => {
+            const normalizedTime = elapsed / journeyDuration;
+            const fastProgress = (1 - Math.exp(-elapsed / 250)) / fastProgressDenominator;
+            const slowProgress = 1 - Math.pow(1 - normalizedTime, 2);
+            const progress = Math.min(1, fastProgress * 0.7 + slowProgress * 0.3);
+            const x = originX + travelX * progress;
+            const y = clampY(
+              originY
+              + travelY * progress
+              + desktopRightArc * Math.sin(Math.PI * progress),
+            );
+            const scale = 0.35 + Math.min(1, elapsed / 200) * 0.65;
+            const opacity = elapsed <= 1500
+              ? 1
+              : elapsed <= 3600
+                ? 1 - ((elapsed - 1500) / 2100) * 0.76
+                : 0.24 - ((elapsed - 3600) / (journeyDuration - 3600)) * 0.12;
+
+            return {
+              offset: normalizedTime,
+              opacity,
+              transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
+              easing: 'linear',
+            };
+          });
+
+          const journey = particle.animate(journeyFrames, {
+            duration: journeyDuration,
+            fill: 'forwards',
+          });
+          journey.addEventListener('finish', () => {
+            particle.style.willChange = 'auto';
+          }, { once: true });
+        };
+
+        animation.addEventListener('frame', ({ currentFrame }) => {
+          while (nextEmission < emissionFrames.length && currentFrame >= emissionFrames[nextEmission]) {
+            const batchStart = nextEmission * 6;
+            for (let i = batchStart; i < batchStart + 6; i += 1) {
+              emitGrain(grains[i], i);
+            }
+            emitGrain(
+              grains[batchStart],
+              batchStart + 24,
+              grains[batchStart].x + 0.035,
+              grains[batchStart].y + 0.045,
+            );
+            emitGrain(
+              grains[batchStart + 2],
+              batchStart + 25,
+              grains[batchStart + 2].x - 0.04,
+              grains[batchStart + 2].y - 0.04,
+            );
+            if (nextEmission % 2 === 0) {
+              emitGrain(
+                grains[batchStart + 4],
+                batchStart + 26,
+                grains[batchStart + 4].x + 0.025,
+                grains[batchStart + 4].y + 0.06,
+              );
+            } else {
+              emitGrain(
+                grains[batchStart + 1],
+                batchStart + 26,
+                grains[batchStart + 1].x - 0.025,
+                grains[batchStart + 1].y + 0.06,
+              );
+            }
+            nextEmission += 1;
+          }
+        });
+      }
 
       animation.addEventListener('load', () => {
         if (reduceMotion) {
