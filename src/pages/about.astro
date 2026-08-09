@@ -219,8 +219,8 @@ const teffFacts = [
   /* ========== ABOUT HERO ========== */
   .about-hero {
     position: relative;
-    padding-block: var(--space-8);
-    min-height: 40vh;
+    padding-block: calc(var(--header-height) + var(--space-8)) var(--space-8);
+    min-height: calc(40vh + var(--header-height));
     display: flex;
     align-items: center;
     background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));

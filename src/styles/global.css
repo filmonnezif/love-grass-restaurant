@@ -108,6 +108,8 @@
   --max-width: 1200px;
   --max-width-narrow: 800px;
   --gutter: var(--space-4);
+  --header-height: 64px;
+  --scroll-progress-height: 3px;
 
   /* Border Radius */
   --radius-sm: 4px;
@@ -136,6 +138,12 @@
   --z-overlay: 300;
   --z-modal: 400;
   --z-toast: 500;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-height: 72px;
+  }
 }
 
 /* ---------- Reset ---------- */
