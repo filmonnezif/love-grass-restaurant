@@ -242,7 +242,7 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
         aria-roledescription="carousel"
         aria-label="Atmosphere videos"
       >
-        <div class="atmosphere-carousel__track" data-atmosphere-track>
+        <div class="atmosphere-carousel__track" id="atmosphere-carousel-track" data-atmosphere-track>
           {atmosphereItems.map((item, i) => (
             <button
               type="button"
@@ -281,6 +281,29 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
             </button>
           ))}
         </div>
+      </div>
+
+      <div class="atmosphere-carousel__controls" role="group" aria-label="Atmosphere navigation">
+        <button
+          type="button"
+          data-atmosphere-prev
+          aria-controls="atmosphere-carousel-track"
+          aria-label="Previous atmosphere video"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m14.5 6-6 6 6 6"></path>
+          </svg>
+        </button>
+        <button
+          type="button"
+          data-atmosphere-next
+          aria-controls="atmosphere-carousel-track"
+          aria-label="Next atmosphere video"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m9.5 6 6 6-6 6"></path>
+          </svg>
+        </button>
       </div>
 
       <p class="sr-only" data-atmosphere-status aria-live="polite"></p>
@@ -1487,6 +1510,55 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
     inset: 0;
   }
 
+  .atmosphere-carousel__controls {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .atmosphere-carousel__controls button {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    opacity: 0.7;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .atmosphere-carousel__controls button:hover {
+    border-color: var(--color-primary-100);
+    background: color-mix(in srgb, var(--color-surface-card) 55%, transparent);
+    color: var(--color-primary-dark);
+    opacity: 1;
+  }
+
+  .atmosphere-carousel__controls button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    opacity: 1;
+  }
+
+  .atmosphere-carousel__controls svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
   @media (min-width: 900px) {
     .atmosphere-carousel {
       height: clamp(25rem, 44vw, 33rem);
@@ -1654,7 +1726,8 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
   @media (prefers-reduced-motion: reduce) {
     .atmosphere-card,
     .atmosphere-card__poster,
-    .atmosphere-card__video {
+    .atmosphere-card__video,
+    .atmosphere-carousel__controls button {
       transition: none;
     }
   }
@@ -2446,7 +2519,10 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
     const carousel = document.querySelector<HTMLElement>('[data-atmosphere-grid]');
     if (!carousel || carousel.dataset.initialized === 'true') return;
 
-    const status = document.querySelector<HTMLElement>('[data-atmosphere-status]');
+    const section = carousel.closest<HTMLElement>('.atmosphere');
+    const status = section?.querySelector<HTMLElement>('[data-atmosphere-status]');
+    const previousButton = section?.querySelector<HTMLButtonElement>('[data-atmosphere-prev]');
+    const nextButton = section?.querySelector<HTMLButtonElement>('[data-atmosphere-next]');
     const cards = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-atmosphere-card]'))
       .sort((a, b) => Number(a.dataset.atmosphereIndex) - Number(b.dataset.atmosphereIndex));
     if (!cards.length) return;
@@ -2575,6 +2651,15 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
         pauseForInteraction();
       });
     });
+
+    const move = (direction: -1 | 1) => {
+      const nextIndex = (activeIndex + direction + cards.length) % cards.length;
+      setActive(nextIndex, true);
+      pauseForInteraction();
+    };
+
+    previousButton?.addEventListener('click', () => move(-1));
+    nextButton?.addEventListener('click', () => move(1));
 
     carousel.addEventListener('pointerdown', (event) => {
       if (!event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
