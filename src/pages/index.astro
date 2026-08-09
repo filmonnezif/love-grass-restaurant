@@ -2207,11 +2207,16 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const ROTATION_DELAY = 3000;
     const INTERACTION_DELAY = 6000;
+    const SWIPE_THRESHOLD = 48;
     let activeIndex = 0;
     let interactionPaused = false;
     let carouselVisible = false;
     let rotationTimer = 0;
     let interactionTimer = 0;
+    let pointerId: number | null = null;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let suppressClick = false;
 
     const stopRotation = () => {
       window.clearTimeout(rotationTimer);
@@ -2312,9 +2317,47 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
       video?.addEventListener('pause', () => card.classList.remove('is-playing'));
 
       card.addEventListener('click', () => {
+        if (suppressClick) {
+          suppressClick = false;
+          return;
+        }
+
         setActive(index, true);
         pauseForInteraction();
       });
+    });
+
+    carousel.addEventListener('pointerdown', (event) => {
+      if (!event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
+      pointerId = event.pointerId;
+      pointerStartX = event.clientX;
+      pointerStartY = event.clientY;
+      suppressClick = false;
+      carousel.setPointerCapture(event.pointerId);
+    });
+
+    carousel.addEventListener('pointerup', (event) => {
+      if (event.pointerId !== pointerId) return;
+
+      const deltaX = event.clientX - pointerStartX;
+      const deltaY = event.clientY - pointerStartY;
+      pointerId = null;
+
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+
+      suppressClick = true;
+      window.setTimeout(() => {
+        suppressClick = false;
+      }, 0);
+      const direction = deltaX < 0 ? 1 : -1;
+      const nextIndex = (activeIndex + direction + cards.length) % cards.length;
+      setActive(nextIndex, true);
+      pauseForInteraction();
+    });
+
+    carousel.addEventListener('pointercancel', () => {
+      pointerId = null;
+      suppressClick = false;
     });
 
     const observer = new IntersectionObserver(
