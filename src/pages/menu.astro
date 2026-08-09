@@ -899,11 +899,35 @@ const breadcrumbSchema = {
       filter: drop-shadow(0 24px 20px rgba(12, 43, 16, 0.38));
     }
   }
+
+  @media (max-width: 699px) {
+    .menu-item__image,
+    .menu-item:hover .menu-item__image {
+      transform: translateY(44px) scale(1.1);
+      filter: drop-shadow(0 18px 14px rgba(12, 43, 16, 0.42));
+    }
+
+    .menu-item:active .menu-item__image {
+      transform: translateY(44px) scale(1.07);
+    }
+
+    .menu-item.is-modal-source .menu-item__image {
+      transform: translateY(44px) scale(1.1);
+      transition: none;
+    }
+
+    .menu-item__body {
+      padding-top: calc(var(--space-3) + var(--space-2));
+    }
+  }
+
   .item-modal {
     margin: auto 0 0 0;
     width: 100%;
     max-width: none;
     max-height: 90vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     border: none;
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     background: linear-gradient(145deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
@@ -944,6 +968,7 @@ const breadcrumbSchema = {
   
   .item-modal__visual {
     position: relative;
+    z-index: 1;
     padding: var(--space-6) var(--space-4) var(--space-4);
     background: radial-gradient(circle at 50% 58%, rgba(200, 230, 201, 0.86), transparent 48%),
                 linear-gradient(155deg, rgba(250, 250, 245, 0.9), rgba(232, 245, 233, 0.8));
@@ -977,15 +1002,20 @@ const breadcrumbSchema = {
   }
   
   .item-modal__image {
+    position: relative;
+    z-index: 2;
     width: 100%;
     max-width: 320px;
     height: 220px;
     object-fit: contain;
-    filter: drop-shadow(0 24px 20px rgba(12, 43, 16, 0.38));
+    filter: drop-shadow(0 30px 24px rgba(12, 43, 16, 0.44));
+    transform: translateY(48px) scale(1.06);
   }
   
   .item-modal__body {
-    padding: var(--space-6) var(--space-5) calc(var(--space-8) + env(safe-area-inset-bottom));
+    position: relative;
+    z-index: 0;
+    padding: calc(var(--space-6) + var(--space-4)) var(--space-5) calc(var(--space-8) + env(safe-area-inset-bottom));
   }
   
   .item-modal__amharic {
@@ -1109,14 +1139,25 @@ const breadcrumbSchema = {
       });
     }
 
+    let activeCategoryId = menuLinks.find(link => link.classList.contains('is-active'))?.dataset.menuLink;
+
     const setActiveCategory = (sectionId: string) => {
+      if (activeCategoryId === sectionId) return;
+      activeCategoryId = sectionId;
+
       menuLinks.forEach((link) => {
         const isActive = link.dataset.menuLink === sectionId;
         link.classList.toggle('is-active', isActive);
         if (isActive) {
           link.setAttribute('aria-current', 'location');
           const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          link.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+          const navBounds = menuNav.getBoundingClientRect();
+          const linkBounds = link.getBoundingClientRect();
+          const left = menuNav.scrollLeft
+            + linkBounds.left
+            - navBounds.left
+            - ((navBounds.width - linkBounds.width) / 2);
+          menuNav.scrollTo({ left, behavior: reduceMotion ? 'auto' : 'smooth' });
         } else {
           link.removeAttribute('aria-current');
         }
@@ -1124,27 +1165,45 @@ const breadcrumbSchema = {
     };
 
     if (menuSections.length && menuLinks.length) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const visible = entries
-            .filter(entry => entry.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      let activeSectionFrame = 0;
+      let navigationTargetId: string | null = null;
 
-          if (visible[0]?.target instanceof HTMLElement) {
-            setActiveCategory(visible[0].target.id);
-          }
-        },
-        { rootMargin: '-145px 0px -58% 0px', threshold: [0, 0.05, 0.2, 0.45] }
-      );
+      const syncActiveSection = () => {
+        activeSectionFrame = 0;
+        const activationLine = menuNav.getBoundingClientRect().bottom + 16;
 
-      menuSections.forEach(section => observer.observe(section));
+        if (navigationTargetId) {
+          const target = document.getElementById(navigationTargetId);
+          if (target && Math.abs(target.getBoundingClientRect().top - activationLine) > 20) return;
+          navigationTargetId = null;
+        }
+
+        let activeSection = menuSections[0];
+        menuSections.forEach((section) => {
+          if (section.getBoundingClientRect().top <= activationLine) activeSection = section;
+        });
+        setActiveCategory(activeSection.id);
+      };
+
+      const scheduleActiveSectionSync = () => {
+        if (activeSectionFrame) return;
+        activeSectionFrame = window.requestAnimationFrame(syncActiveSection);
+      };
+
+      window.addEventListener('scroll', scheduleActiveSectionSync, { passive: true });
+      window.addEventListener('resize', scheduleActiveSectionSync, { passive: true });
 
       menuLinks.forEach(link => {
         link.addEventListener('click', () => {
           const sectionId = link.dataset.menuLink;
-          if (sectionId) setActiveCategory(sectionId);
+          if (sectionId) {
+            navigationTargetId = sectionId;
+            setActiveCategory(sectionId);
+          }
         });
       });
+
+      scheduleActiveSectionSync();
     }
 
     if (menuNav) {
@@ -1194,9 +1253,53 @@ const breadcrumbSchema = {
 
     const modal = document.getElementById('item-modal') as HTMLDialogElement | null;
     const modalClose = document.getElementById('modal-close-btn');
+    let lockedScrollY = 0;
+    let pageScrollLocked = false;
+    const previousBodyStyles = {
+      overflow: '',
+      position: '',
+      top: '',
+      width: '',
+    };
+
+    const lockPageScroll = () => {
+      if (pageScrollLocked) return;
+
+      lockedScrollY = window.scrollY;
+      previousBodyStyles.overflow = document.body.style.overflow;
+      previousBodyStyles.position = document.body.style.position;
+      previousBodyStyles.top = document.body.style.top;
+      previousBodyStyles.width = document.body.style.width;
+
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.style.width = '100%';
+      pageScrollLocked = true;
+    };
+
+    const unlockPageScroll = () => {
+      if (!pageScrollLocked) return;
+
+      document.body.style.overflow = previousBodyStyles.overflow;
+      document.body.style.position = previousBodyStyles.position;
+      document.body.style.top = previousBodyStyles.top;
+      document.body.style.width = previousBodyStyles.width;
+
+      const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, lockedScrollY);
+      document.documentElement.style.scrollBehavior = previousScrollBehavior;
+      pageScrollLocked = false;
+    };
     
     if (modal && modalClose) {
       modalClose.addEventListener('click', () => modal.close());
+
+      modal.addEventListener('close', () => {
+        unlockPageScroll();
+        menuCards.forEach(card => card.classList.remove('is-modal-source'));
+      });
       
       modal.addEventListener('click', (e) => {
         if (e.target === modal) modal.close();
@@ -1233,7 +1336,10 @@ const breadcrumbSchema = {
             tagsContainer.appendChild(li);
           });
           tagsContainer.style.display = tags.length ? 'flex' : 'none';
-          
+
+          menuCards.forEach(menuCard => menuCard.classList.remove('is-modal-source'));
+          card.classList.add('is-modal-source');
+          lockPageScroll();
           modal.showModal();
         });
       });
