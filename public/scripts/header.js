@@ -32,26 +32,14 @@ if (toggle && menu) {
 }
 
 const header = document.getElementById('site-header');
-const progress = document.getElementById('scroll-progress');
-const supportsScrollTimeline = CSS.supports?.('animation-timeline: scroll()') ?? false;
 let updateFrame = 0;
 
 function updateScrollState() {
   updateFrame = 0;
 
   const scrollTop = window.scrollY;
-  const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
 
   header?.classList.toggle('scrolled', scrollTop > 48);
-  progress?.classList.toggle('is-scrollable', scrollRange > 0);
-
-  if (!supportsScrollTimeline && progress) {
-    const scrollProgress = scrollRange > 0
-      ? Math.min(1, Math.max(0, scrollTop / scrollRange))
-      : 0;
-
-    progress.style.setProperty('--scroll-progress', String(scrollProgress));
-  }
 }
 
 function scheduleScrollUpdate() {

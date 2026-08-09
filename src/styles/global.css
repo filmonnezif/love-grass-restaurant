@@ -109,7 +109,6 @@
   --max-width-narrow: 800px;
   --gutter: var(--space-4);
   --header-height: 64px;
-  --scroll-progress-height: 3px;
 
   /* Border Radius */
   --radius-sm: 4px;
