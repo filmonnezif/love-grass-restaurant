@@ -1,0 +1,42 @@
+---
+// AsphaltRoad.astro
+// Renders the layered SVG road. 
+// The actual 'd' attributes of the paths are updated by vanilla JS on the client.
+---
+<svg
+  id="asphalt-road-svg"
+  aria-hidden="true"
+  class="road-svg"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Road border / kerb -->
+  <path class="road-path" stroke="#080808" stroke-width="48" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Asphalt base -->
+  <path class="road-path" stroke="#181818" stroke-width="43" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Road surface -->
+  <path class="road-path" stroke="#2a2826" stroke-width="38" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Worn asphalt detail -->
+  <path class="road-path" stroke="#323030" stroke-width="30" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Edge lines (white markings) -->
+  <path class="road-path" stroke="rgba(255,255,255,0.22)" stroke-width="38" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <path class="road-path" stroke="#2e2c2a" stroke-width="36" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Center dashed line -->
+  <path class="road-path" stroke="rgba(240,230,160,0.78)" stroke-width="2.5" fill="none" stroke-dasharray="24 18" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+<style>
+  .road-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 3;
+    overflow: visible;
+    /* width and height are set dynamically by JS */
+  }
+</style>

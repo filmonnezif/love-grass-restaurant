@@ -1029,209 +1029,217 @@ const breadcrumbSchema = {
 </style>
 
 <script>
-  const menuNav = document.querySelector<HTMLElement>('[data-menu-nav]');
-  const menuSections = Array.from(document.querySelectorAll<HTMLElement>('[data-menu-section]'));
-  const menuLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-menu-link]'));
-  const menuCards = Array.from(document.querySelectorAll<HTMLElement>('[data-menu-card]'));
-  const menuGrids = Array.from(document.querySelectorAll<HTMLElement>('.menu-items-grid'));
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const finePointerQuery = window.matchMedia('(pointer: fine)');
+  function initMenu() {
+    const menuNav = document.querySelector<HTMLElement>('[data-menu-nav]');
+    if (!menuNav || menuNav.dataset.initialized === 'true') return;
+    menuNav.dataset.initialized = 'true';
 
-  const updateCardDelays = () => {
-    menuGrids.forEach((grid) => {
-      const columns = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
-      const cards = Array.from(grid.querySelectorAll<HTMLElement>('[data-menu-card]'));
+    const menuSections = Array.from(document.querySelectorAll<HTMLElement>('[data-menu-section]'));
+    const menuLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-menu-link]'));
+    const menuCards = Array.from(document.querySelectorAll<HTMLElement>('[data-menu-card]'));
+    const menuGrids = Array.from(document.querySelectorAll<HTMLElement>('.menu-items-grid'));
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const finePointerQuery = window.matchMedia('(pointer: fine)');
 
-      cards.forEach((card, index) => {
-        const columnIndex = columns > 1 ? index % columns : 0;
-        card.style.setProperty('--card-delay', `${columnIndex * 60}ms`);
-      });
-    });
-  };
+    const updateCardDelays = () => {
+      menuGrids.forEach((grid) => {
+        const columns = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+        const cards = Array.from(grid.querySelectorAll<HTMLElement>('[data-menu-card]'));
 
-  updateCardDelays();
-
-  if ('ResizeObserver' in window) {
-    const gridResizeObserver = new ResizeObserver(updateCardDelays);
-    menuGrids.forEach(grid => gridResizeObserver.observe(grid));
-  } else {
-    window.addEventListener('resize', updateCardDelays, { passive: true });
-  }
-
-  if (reducedMotionQuery.matches || !('IntersectionObserver' in window)) {
-    menuCards.forEach(card => card.classList.add('is-settled'));
-  } else {
-    const cardObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting || !(entry.target instanceof HTMLElement)) return;
-          entry.target.classList.add('is-settled');
-          cardObserver.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -36px 0px' }
-    );
-
-    menuCards.forEach(card => cardObserver.observe(card));
-  }
-
-  if (finePointerQuery.matches && !reducedMotionQuery.matches) {
-    menuCards.forEach((card) => {
-      let pointerFrame = 0;
-      let pointerX = 0;
-      let pointerY = 0;
-
-      card.addEventListener('pointerenter', () => card.classList.add('is-pointer-active'));
-      card.addEventListener('pointerleave', () => {
-        card.classList.remove('is-pointer-active');
-        card.style.removeProperty('--pointer-x');
-        card.style.removeProperty('--pointer-y');
-      });
-
-      card.addEventListener('pointermove', (event) => {
-        pointerX = event.clientX;
-        pointerY = event.clientY;
-        if (pointerFrame) return;
-
-        pointerFrame = requestAnimationFrame(() => {
-          const bounds = card.getBoundingClientRect();
-          const x = ((pointerX - bounds.left) / bounds.width) * 100;
-          const y = ((pointerY - bounds.top) / bounds.height) * 100;
-          card.style.setProperty('--pointer-x', `${x}%`);
-          card.style.setProperty('--pointer-y', `${y}%`);
-          pointerFrame = 0;
+        cards.forEach((card, index) => {
+          const columnIndex = columns > 1 ? index % columns : 0;
+          card.style.setProperty('--card-delay', `${columnIndex * 60}ms`);
         });
       });
-    });
-  }
+    };
 
-  const setActiveCategory = (sectionId: string) => {
-    menuLinks.forEach((link) => {
-      const isActive = link.dataset.menuLink === sectionId;
-      link.classList.toggle('is-active', isActive);
-      if (isActive) {
-        link.setAttribute('aria-current', 'location');
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        link.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
-      } else {
-        link.removeAttribute('aria-current');
-      }
-    });
-  };
+    updateCardDelays();
 
-  if (menuSections.length && menuLinks.length) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter(entry => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    if ('ResizeObserver' in window) {
+      const gridResizeObserver = new ResizeObserver(updateCardDelays);
+      menuGrids.forEach(grid => gridResizeObserver.observe(grid));
+    } else {
+      window.addEventListener('resize', updateCardDelays, { passive: true });
+    }
 
-        if (visible[0]?.target instanceof HTMLElement) {
-          setActiveCategory(visible[0].target.id);
-        }
-      },
-      { rootMargin: '-145px 0px -58% 0px', threshold: [0, 0.05, 0.2, 0.45] }
-    );
+    if (reducedMotionQuery.matches || !('IntersectionObserver' in window)) {
+      menuCards.forEach(card => card.classList.add('is-settled'));
+    } else {
+      const cardObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting || !(entry.target instanceof HTMLElement)) return;
+            entry.target.classList.add('is-settled');
+            cardObserver.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -36px 0px' }
+      );
 
-    menuSections.forEach(section => observer.observe(section));
+      menuCards.forEach(card => cardObserver.observe(card));
+    }
 
-    menuLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        const sectionId = link.dataset.menuLink;
-        if (sectionId) setActiveCategory(sectionId);
+    if (finePointerQuery.matches && !reducedMotionQuery.matches) {
+      menuCards.forEach((card) => {
+        let pointerFrame = 0;
+        let pointerX = 0;
+        let pointerY = 0;
+
+        card.addEventListener('pointerenter', () => card.classList.add('is-pointer-active'));
+        card.addEventListener('pointerleave', () => {
+          card.classList.remove('is-pointer-active');
+          card.style.removeProperty('--pointer-x');
+          card.style.removeProperty('--pointer-y');
+        });
+
+        card.addEventListener('pointermove', (event) => {
+          pointerX = event.clientX;
+          pointerY = event.clientY;
+          if (pointerFrame) return;
+
+          pointerFrame = requestAnimationFrame(() => {
+            const bounds = card.getBoundingClientRect();
+            const x = ((pointerX - bounds.left) / bounds.width) * 100;
+            const y = ((pointerY - bounds.top) / bounds.height) * 100;
+            card.style.setProperty('--pointer-x', `${x}%`);
+            card.style.setProperty('--pointer-y', `${y}%`);
+            pointerFrame = 0;
+          });
+        });
       });
-    });
-  }
+    }
 
-  if (menuNav) {
-    menuNav.addEventListener('keydown', (event) => {
-      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-
-      const currentIndex = menuLinks.indexOf(document.activeElement as HTMLAnchorElement);
-      if (currentIndex === -1) return;
-
-      event.preventDefault();
-      const direction = event.key === 'ArrowRight' ? 1 : -1;
-      const nextIndex = (currentIndex + direction + menuLinks.length) % menuLinks.length;
-      menuLinks[nextIndex]?.focus();
-    });
-  }
-
-  const expandButtons = document.querySelectorAll<HTMLButtonElement>('[data-expand-section]');
-  expandButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const sectionId = button.dataset.expandSection;
-      const section = document.getElementById(sectionId!);
-      if (section) {
-        const grid = section.querySelector('.menu-items-grid');
-        if (grid) {
-          grid.classList.add('is-expanded');
-          updateCardDelays(); // Refresh the stagger delays for new cards
-        }
-      }
-    });
-  });
-
-  const collapseButtons = document.querySelectorAll<HTMLButtonElement>('[data-collapse-section]');
-  collapseButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const sectionId = button.dataset.collapseSection;
-      const section = document.getElementById(sectionId!);
-      if (section) {
-        const grid = section.querySelector('.menu-items-grid');
-        if (grid) {
-          grid.classList.remove('is-expanded');
+    const setActiveCategory = (sectionId: string) => {
+      menuLinks.forEach((link) => {
+        const isActive = link.dataset.menuLink === sectionId;
+        link.classList.toggle('is-active', isActive);
+        if (isActive) {
+          link.setAttribute('aria-current', 'location');
           const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          section.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+          link.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+        } else {
+          link.removeAttribute('aria-current');
         }
-      }
-    });
-  });
+      });
+    };
 
-  const modal = document.getElementById('item-modal') as HTMLDialogElement | null;
-  const modalClose = document.getElementById('modal-close-btn');
-  
-  if (modal && modalClose) {
-    modalClose.addEventListener('click', () => modal.close());
-    
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) modal.close();
-    });
+    if (menuSections.length && menuLinks.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter(entry => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
 
-    menuCards.forEach(card => {
-      card.addEventListener('click', () => {
-        if (window.innerWidth >= 700) return;
-        
-        const name = card.dataset.itemName;
-        const amharic = card.dataset.itemAmharic;
-        const desc = card.dataset.itemDescription;
-        const price = card.dataset.itemPrice;
-        const imgSrc = card.dataset.itemImage;
-        const tags = JSON.parse(decodeURIComponent(card.dataset.itemTags || '%5B%5D'));
-        const cardOrder = Number(card.dataset.cardOrder || 0) + 1;
-        
-        document.getElementById('modal-name')!.textContent = name || '';
-        document.getElementById('modal-amharic')!.textContent = amharic || '';
-        document.getElementById('modal-description')!.textContent = desc || '';
-        document.getElementById('modal-price')!.textContent = price || '';
-        document.getElementById('modal-number')!.textContent = cardOrder.toString().padStart(2, '0');
-        
-        const modalImg = document.getElementById('modal-image') as HTMLImageElement;
-        modalImg.src = imgSrc || '';
-        modalImg.alt = name || '';
-        
-        const tagsContainer = document.getElementById('modal-tags')!;
-        tagsContainer.innerHTML = '';
-        tags.forEach((tag: string) => {
-          const li = document.createElement('li');
-          li.className = 'dietary-tag';
-          li.textContent = tag;
-          tagsContainer.appendChild(li);
+          if (visible[0]?.target instanceof HTMLElement) {
+            setActiveCategory(visible[0].target.id);
+          }
+        },
+        { rootMargin: '-145px 0px -58% 0px', threshold: [0, 0.05, 0.2, 0.45] }
+      );
+
+      menuSections.forEach(section => observer.observe(section));
+
+      menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const sectionId = link.dataset.menuLink;
+          if (sectionId) setActiveCategory(sectionId);
         });
-        tagsContainer.style.display = tags.length ? 'flex' : 'none';
-        
-        modal.showModal();
+      });
+    }
+
+    if (menuNav) {
+      menuNav.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+
+        const currentIndex = menuLinks.indexOf(document.activeElement as HTMLAnchorElement);
+        if (currentIndex === -1) return;
+
+        event.preventDefault();
+        const direction = event.key === 'ArrowRight' ? 1 : -1;
+        const nextIndex = (currentIndex + direction + menuLinks.length) % menuLinks.length;
+        menuLinks[nextIndex]?.focus();
+      });
+    }
+
+    const expandButtons = document.querySelectorAll<HTMLButtonElement>('[data-expand-section]');
+    expandButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const sectionId = button.dataset.expandSection;
+        const section = document.getElementById(sectionId!);
+        if (section) {
+          const grid = section.querySelector('.menu-items-grid');
+          if (grid) {
+            grid.classList.add('is-expanded');
+            updateCardDelays(); // Refresh the stagger delays for new cards
+          }
+        }
       });
     });
+
+    const collapseButtons = document.querySelectorAll<HTMLButtonElement>('[data-collapse-section]');
+    collapseButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const sectionId = button.dataset.collapseSection;
+        const section = document.getElementById(sectionId!);
+        if (section) {
+          const grid = section.querySelector('.menu-items-grid');
+          if (grid) {
+            grid.classList.remove('is-expanded');
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            section.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+
+    const modal = document.getElementById('item-modal') as HTMLDialogElement | null;
+    const modalClose = document.getElementById('modal-close-btn');
+    
+    if (modal && modalClose) {
+      modalClose.addEventListener('click', () => modal.close());
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.close();
+      });
+
+      menuCards.forEach(card => {
+        card.addEventListener('click', () => {
+          if (window.innerWidth >= 700) return;
+          
+          const name = card.dataset.itemName;
+          const amharic = card.dataset.itemAmharic;
+          const desc = card.dataset.itemDescription;
+          const price = card.dataset.itemPrice;
+          const imgSrc = card.dataset.itemImage;
+          const tags = JSON.parse(decodeURIComponent(card.dataset.itemTags || '%5B%5D'));
+          const cardOrder = Number(card.dataset.cardOrder || 0) + 1;
+          
+          document.getElementById('modal-name')!.textContent = name || '';
+          document.getElementById('modal-amharic')!.textContent = amharic || '';
+          document.getElementById('modal-description')!.textContent = desc || '';
+          document.getElementById('modal-price')!.textContent = price || '';
+          document.getElementById('modal-number')!.textContent = cardOrder.toString().padStart(2, '0');
+          
+          const modalImg = document.getElementById('modal-image') as HTMLImageElement;
+          modalImg.src = imgSrc || '';
+          modalImg.alt = name || '';
+          
+          const tagsContainer = document.getElementById('modal-tags')!;
+          tagsContainer.innerHTML = '';
+          tags.forEach((tag: string) => {
+            const li = document.createElement('li');
+            li.className = 'dietary-tag';
+            li.textContent = tag;
+            tagsContainer.appendChild(li);
+          });
+          tagsContainer.style.display = tags.length ? 'flex' : 'none';
+          
+          modal.showModal();
+        });
+      });
+    }
   }
+
+  initMenu();
+  document.addEventListener('astro:page-load', initMenu);
 </script>
