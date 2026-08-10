@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://love-grass.com/sitemap-index.xml
+Sitemap: https://www.lovegrassdubai.com/sitemap-index.xml
 
 # Disallow admin/draft pages (future-proofing)
 Disallow: /admin/
