@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://love-grass.com',
+  site: 'https://www.lovegrassdubai.com',
   integrations: [sitemap()],
   image: {
     domains: [],
