@@ -3,39 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import menuData from '../data/menu.json';
 import { Image } from 'astro:assets';
 
-import loveGrassSpecialImg from '../assets/food/love-grass-special.png';
-import specialKitfoImg from '../assets/food/special-kitfo.png';
-import maheberawiImg from '../assets/food/maheberawi.png';
-import derekTibsImg from '../assets/food/derek-tibs.png';
-import teffCakeImg from '../assets/food/teff-cake.png';
-import teffBerryDelightImg from '../assets/food/teff-berry-delight.png';
-import doroWotImg from '../assets/food/doro-wot.png';
-import beyeyanetuImg from '../assets/food/beyeyanetu.png';
-import yebegTibsImg from '../assets/food/yebeg-tibs.png';
-import extraInjeraImg from '../assets/food/extra-injera.png';
-import ethiopianSaladImg from '../assets/food/ethiopian-salad.png';
-import sambusaImg from '../assets/food/sambusa.png';
-import bunaImg from '../assets/food/buna.png';
-import tejImg from '../assets/food/tej.png';
-import sprisImg from '../assets/food/spris.png';
-
-const foodImages: Record<string, ImageMetadata> = {
-  'love-grass-special.png': loveGrassSpecialImg,
-  'special-kitfo.png': specialKitfoImg,
-  'maheberawi.png': maheberawiImg,
-  'derek-tibs.png': derekTibsImg,
-  'teff-cake.png': teffCakeImg,
-  'teff-berry-delight.png': teffBerryDelightImg,
-  'doro-wot.png': doroWotImg,
-  'beyeyanetu.png': beyeyanetuImg,
-  'yebeg-tibs.png': yebegTibsImg,
-  'extra-injera.png': extraInjeraImg,
-  'ethiopian-salad.png': ethiopianSaladImg,
-  'sambusa.png': sambusaImg,
-  'buna.png': bunaImg,
-  'tej.png': tejImg,
-  'spris.png': sprisImg,
-};
+const rawFoodImages = import.meta.glob<{ default: ImageMetadata }>('../assets/food/*.png', { eager: true });
+const foodImages: Record<string, ImageMetadata> = {};
+for (const path in rawFoodImages) {
+  const filename = path.split('/').pop();
+  if (filename) {
+    foodImages[filename] = rawFoodImages[path].default;
+  }
+}
 
 const featureTagLabel = (tags: string[]) => {
   if (tags.includes('signature')) return 'House Signature';

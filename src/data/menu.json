@@ -2,15 +2,15 @@
   "sections": [
     {
       "id": "injera-platters",
-      "name": "Injera Platters",
+      "name": "Injera Platters & Mains",
       "nameAmharic": "የእንጀራ ምግቦች",
-      "description": "Traditional Ethiopian dishes served on our signature homemade injera",
+      "description": "Traditional Ethiopian meat dishes served with authentic homemade injera",
       "items": [
         {
           "id": "love-grass-special",
           "name": "Love Grass Special",
           "nameAmharic": "ላቭ ግራስ ስፔሻል",
-          "description": "Fried meat, Kitfo (raw meat mixed with butter), Ethiopian cheese, served with homemade injera",
+          "description": "Fried Meat, Kitfo (Raw Meat Mixed With Butter), Ethiopian Cheese, Served with Home Made Enjera",
           "price": 75,
           "currency": "AED",
           "image": "love-grass-special.png",
@@ -21,7 +21,7 @@
           "id": "special-kitfo",
           "name": "Special Kitfo",
           "nameAmharic": "ስፔሻል ክትፎ",
-          "description": "Chopped raw meat mixed with butter, chopped cabbage, Ethiopian cheese, served with chili powder, homemade injera and kocho",
+          "description": "Choped Raw Meat Mixed With Butter, Choped Cabbage, Ethiopian Cheese, Served with Chili Powder, Home Made Enjera and Kocho",
           "price": 50,
           "currency": "AED",
           "image": "special-kitfo.png",
@@ -32,40 +32,457 @@
           "id": "maheberawi",
           "name": "Maheberawi",
           "nameAmharic": "ማህበራዊ",
-          "description": "Cooked meat served with homemade cheese, cabbage with meat, and homemade injera",
+          "description": "Cooked Meat Served with home made cheese, Cabbage with meat, Home Made Enjera",
           "price": 55,
           "currency": "AED",
           "image": "maheberawi.png",
-          "tags": ["signature", "popular"],
+          "tags": ["popular"],
+          "dietary": []
+        },
+        {
+          "id": "bula-kitfo",
+          "name": "Bula Kitfo",
+          "nameAmharic": "ቡላ ክትፎ",
+          "description": "Choped Raw Meat Mixed With Butter, Served with Home Made Enjera and Kocho",
+          "price": 55,
+          "currency": "AED",
+          "image": "bula-kitfo.png",
+          "tags": [],
+          "dietary": ["gluten-free"]
+        },
+        {
+          "id": "zilzil-wot",
+          "name": "Zilzil Wot",
+          "nameAmharic": "ዝልዝል ወጥ",
+          "description": "Cooked Meat with 2 Style Cooking, served with Home Made Enjera",
+          "price": 50,
+          "currency": "AED",
+          "image": "zilzil-wot.png",
+          "tags": ["popular"],
+          "dietary": []
+        },
+        {
+          "id": "fisik",
+          "name": "Fisik",
+          "nameAmharic": "የፍስክ ባለ 4",
+          "description": "Cooked Meat, Cabbage with meat and Served with Home Made Enjera",
+          "price": 50,
+          "currency": "AED",
+          "image": "fisik.png",
+          "tags": [],
           "dietary": []
         },
         {
           "id": "derek-tibs",
           "name": "Derek Tibs",
           "nameAmharic": "ደረቅ ጥብስ",
-          "description": "Dry fried meat served with chili powder and homemade injera",
+          "description": "Dry Fried Meat served with Chili Powder and Home Made Enjera",
           "price": 50,
           "currency": "AED",
           "image": "derek-tibs.png",
-          "tags": ["signature", "popular"],
+          "tags": ["popular"],
           "dietary": []
         },
         {
-          "id": "teff-cake",
-          "name": "Teff Cake 1kg",
-          "nameAmharic": "የጤፍ ኬክ 1k.g",
-          "description": "Artisanal teff cake (1kg), wholesome, rich in protein and gluten-free",
-          "price": 150,
+          "id": "yebeg-kikil",
+          "name": "Yebeg Kikil",
+          "nameAmharic": "የበግ ቅቅል",
+          "description": "Slow-cooked sheep meat and bones in a pure, aromatic broth for an authentic traditional flavor.",
+          "price": 50,
           "currency": "AED",
-          "image": "teff-cake.png",
-          "tags": ["signature"],
-          "dietary": ["gluten-free", "vegetarian"]
+          "image": "yebeg-kikil.png",
+          "tags": [],
+          "dietary": ["gluten-free"]
         },
+        {
+          "id": "tefersho-half-half",
+          "name": "Tefersho Half Half",
+          "nameAmharic": "ተፈርፍሮ ግማሽ ግማሽ",
+          "description": "Fried Meat Mixed With Enjera and Served with Chili Powder Home Made Enjera",
+          "price": 50,
+          "currency": "AED",
+          "image": "tefersho-half-half.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "tibs",
+          "name": "Tibs",
+          "nameAmharic": "ጥብስ",
+          "description": "Fried Meat Served with Chili Powder and Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "tibs.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "red-tibs",
+          "name": "Red Tibs",
+          "nameAmharic": "ቀይ ጥብስ",
+          "description": "Fried Meat Served with Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "red-tibs.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "choped-tibs",
+          "name": "Choped Tibs",
+          "nameAmharic": "ደቃቅ ጥብስ",
+          "description": "Choped and Fried Meat Served with Chili Powder and Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "choped-tibs.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "red-choped-tibs",
+          "name": "Red Choped Tibs",
+          "nameAmharic": "ደቃቅ ጥብስ በቀይ",
+          "description": "Choped and Fried Meat Served with Chili Powder and Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "red-choped-tibs.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "doro-wot",
+          "name": "Doro Wot",
+          "nameAmharic": "ዶሮ ወጥ",
+          "description": "Cooked Chicken, Boiled Egg, Ethiopian Home Made Cheese, Served With Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "doro-wot.png",
+          "tags": ["popular"],
+          "dietary": ["gluten-free"]
+        },
+        {
+          "id": "gomen-besiga",
+          "name": "Gomen Besiga",
+          "nameAmharic": "ጎመን በስጋ",
+          "description": "Fried Cabbage with Fried Meat served with Chili Powder and Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "gomen-besiga.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "tefersho-be-nech",
+          "name": "Tefersho Be Nech",
+          "nameAmharic": "ተፈርፍሮ በነጭ",
+          "description": "Fried Meat Mixed With Enjera and Served with Chili Powder Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "tefersho-be-nech.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "tefersho-be-key",
+          "name": "Tefersho Be Key",
+          "nameAmharic": "ተፈርፍሮ በቀይ",
+          "description": "Fried Meat Mixed With Enjera and Served with Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "tefersho-be-key.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "tibs-firfir",
+          "name": "Tibs Firfir",
+          "nameAmharic": "ጥብስ ፍርፍር",
+          "description": "Fried Meat Mixed With Enjera and Spiced Butter, Served with Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "tibs-firfir.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "kuanta-firfir",
+          "name": "Kuanta Firfir",
+          "nameAmharic": "ቋንጣ ፍርፍር",
+          "description": "Dried beef strips simmered in rich berbere sauce mixed with shredded injera",
+          "price": 45,
+          "currency": "AED",
+          "image": "kuanta-firfir.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "gored-gored",
+          "name": "Gored Gored",
+          "nameAmharic": "ጎረድ ጎረድ",
+          "description": "Choped Raw Meat Mixed With Butter and Chili powder, Served with Home Made Enjera",
+          "price": 45,
+          "currency": "AED",
+          "image": "gored-gored.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "dulet",
+          "name": "Dulet",
+          "nameAmharic": "ዱለት",
+          "description": "Choped and Coocked Meat Served with Chili Powder and Home Made Enjera",
+          "price": 40,
+          "currency": "AED",
+          "image": "dulet.png",
+          "tags": [],
+          "dietary": []
+        }
+      ]
+    },
+    {
+      "id": "vegetarian",
+      "name": "Vegetarian & Fasting Dishes",
+      "nameAmharic": "የጾም ምግቦች",
+      "description": "Nutritious and flavor-packed plant-based Ethiopian delicacies",
+      "items": [
+        {
+          "id": "beyeyanetu",
+          "name": "Beyaynet",
+          "nameAmharic": "በያይነት",
+          "description": "Peas, Shiro, Sliced Tomato, Carrot, Potato, Lentils Served with Home Made Enjera",
+          "price": 50,
+          "currency": "AED",
+          "image": "beyeyanetu.png",
+          "tags": ["signature", "popular"],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "gomen-be-shiro",
+          "name": "Gomen Be Shiro",
+          "nameAmharic": "ጎመን በሽሮ",
+          "description": "A perfect balance of finely chopped fresh cabbage served alongside smooth, flavorful shiro.",
+          "price": 50,
+          "currency": "AED",
+          "image": "gomen-be-shiro.png",
+          "tags": ["popular"],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "gomen",
+          "name": "Gomen",
+          "nameAmharic": "ጎመን",
+          "description": "Fresh, finely chopped cabbage seasoned lightly for a crisp and refreshing bite.",
+          "price": 45,
+          "currency": "AED",
+          "image": "gomen.png",
+          "tags": [],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "tegabino",
+          "name": "Tegabino",
+          "nameAmharic": "ተጋቢኖ",
+          "description": "Thick Coocked shiro(peas) Served with Home Made Enjera",
+          "price": 35,
+          "currency": "AED",
+          "image": "tegabino.png",
+          "tags": ["popular"],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "fasting-firfir",
+          "name": "Fasting Firfir",
+          "nameAmharic": "የጾም ፍርፍር",
+          "description": "Soft injera pieces mixed with flavorful berbere sauce for a classic, comforting bite.",
+          "price": 35,
+          "currency": "AED",
+          "image": "fasting-firfir.png",
+          "tags": [],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "shiro",
+          "name": "Shiro",
+          "nameAmharic": "ሽሮ",
+          "description": "Normal Coocked shiro(peas) Served with Home Made Enjera",
+          "price": 30,
+          "currency": "AED",
+          "image": "shiro.png",
+          "tags": [],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "ethiopian-salad",
+          "name": "Salad",
+          "nameAmharic": "አትክልት",
+          "description": "Fresh Ethiopian salad with fresh vegetables and house dressing.",
+          "price": 30,
+          "currency": "AED",
+          "image": "ethiopian-salad.png",
+          "tags": [],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "timatim-leb-leb",
+          "name": "Timatim Leb Leb",
+          "nameAmharic": "ቲማቲም ለብለብ",
+          "description": "Choped and Rare Cooked Tomato Served with Home Made Enjera",
+          "price": 25,
+          "currency": "AED",
+          "image": "timatim-leb-leb.png",
+          "tags": [],
+          "dietary": ["vegan", "vegetarian"]
+        }
+      ]
+    },
+    {
+      "id": "specialties",
+      "name": "Specialties & Chechebsa",
+      "nameAmharic": "ልዩ ምግቦች",
+      "description": "House specialty rolls, chechebsa, pasta, and traditional quick bites",
+      "items": [
+        {
+          "id": "special-teff-chechebsa",
+          "name": "Special Teff Chechebsa",
+          "nameAmharic": "ስፔሻል ጤፍ ጨጨብሳ",
+          "description": "Soft, pan-fried teff chechebsa mixed with spiced butter and berbere, served with fluffy scrambled eggs and finished with a drizzle of pure honey.",
+          "price": 40,
+          "currency": "AED",
+          "image": "special-teff-chechebsa.png",
+          "tags": ["signature", "popular"],
+          "dietary": ["vegetarian"]
+        },
+        {
+          "id": "dirkosh-quanta",
+          "name": "Dirkosh Quanta",
+          "nameAmharic": "ደቃቅ ድርቆሽ በቋንጣ",
+          "description": "Injera toasted to a crisp, shredded like firfir for a crunchy, savory experience.",
+          "price": 45,
+          "currency": "AED",
+          "image": "dirkosh-quanta.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "kitfo-roll",
+          "name": "Kitfo Roll",
+          "nameAmharic": "ክትፎ ሮል",
+          "description": "Chili Paper Mixed with Butter and Choped Raw Meat Mixed With Butter Spread on Enjera",
+          "price": 40,
+          "currency": "AED",
+          "image": "kitfo-roll.png",
+          "tags": ["popular"],
+          "dietary": []
+        },
+        {
+          "id": "kocho-chechebsa",
+          "name": "Kocho Chechebsa",
+          "nameAmharic": "የቆጮ ጨጨብሳ",
+          "description": "Soft, pan-fried teff chechebsa mixed with spiced butter and berbere, served with fluffy scrambled eggs and finished with a drizzle of pure honey.",
+          "price": 35,
+          "currency": "AED",
+          "image": "kocho-chechebsa.png",
+          "tags": [],
+          "dietary": ["vegetarian"]
+        },
+        {
+          "id": "pasta-with-meat",
+          "name": "Pasta With Meat",
+          "nameAmharic": "ፓስታ በስጋ",
+          "description": "Pasta tossed with tender, flavorful pieces of meat in a savory sauce.",
+          "price": 35,
+          "currency": "AED",
+          "image": "pasta-with-meat.png",
+          "tags": [],
+          "dietary": []
+        },
+        {
+          "id": "pasta",
+          "name": "Pasta",
+          "nameAmharic": "ፓስታ",
+          "description": "Pasta served with house tomato sauce.",
+          "price": 30,
+          "currency": "AED",
+          "image": "pasta.png",
+          "tags": [],
+          "dietary": ["vegetarian"]
+        },
+        {
+          "id": "scrambled-eggs",
+          "name": "Scrambled Eggs",
+          "nameAmharic": "እንቁላል ፍርፍር",
+          "description": "Fluffy scrambled eggs cooked with fresh tomatoes and peppers.",
+          "price": 25,
+          "currency": "AED",
+          "image": "scrambled-eggs.png",
+          "tags": [],
+          "dietary": ["vegetarian"]
+        },
+        {
+          "id": "kategna-roll",
+          "name": "Kategna Roll",
+          "nameAmharic": "ቃተኛ ሮል",
+          "description": "Chili Paper Mixed with Butter and Spread on Enjera",
+          "price": 20,
+          "currency": "AED",
+          "image": "kategna-roll.png",
+          "tags": [],
+          "dietary": []
+        }
+      ]
+    },
+    {
+      "id": "sides",
+      "name": "Sides & Extras",
+      "nameAmharic": "ተጨማሪዎች",
+      "description": "Fresh homemade injera and healthy additions",
+      "items": [
+        {
+          "id": "chia-seed",
+          "name": "Chia Seed",
+          "nameAmharic": "ቺያ ሲድ",
+          "description": "Highly Nutritious, Loaded with Antioxidants, Support weight loss, Lower your risk of heart disease, Contain many important bone nutrients, Reduce blood sugar levels",
+          "price": 20,
+          "currency": "AED",
+          "image": "chia-seed.png",
+          "tags": [],
+          "dietary": ["vegan", "vegetarian", "gluten-free"]
+        },
+        {
+          "id": "packed-injera",
+          "name": "Packed Injera",
+          "nameAmharic": "1 ኪስ እንጀራ",
+          "description": "Pack of fresh homemade teff injera.",
+          "price": 15,
+          "currency": "AED",
+          "image": "packed-injera.png",
+          "tags": [],
+          "dietary": ["vegan", "vegetarian", "gluten-free"]
+        },
+        {
+          "id": "extra-injera",
+          "name": "1 Piece Injera",
+          "nameAmharic": "1 ፍሬ እንጀራ",
+          "description": "Single piece of fresh homemade teff injera.",
+          "price": 6,
+          "currency": "AED",
+          "image": "extra-injera.png",
+          "tags": [],
+          "dietary": ["vegan", "vegetarian", "gluten-free"]
+        }
+      ]
+    },
+    {
+      "id": "desserts",
+      "name": "Desserts & Teff Bakery",
+      "nameAmharic": "መጣፈጥ",
+      "description": "Wholesome gluten-free teff cakes and sweet delights",
+      "items": [
         {
           "id": "teff-berry-delight",
           "name": "Teff Berry Delight",
           "nameAmharic": "ጤፍ ቤሪ ዲላይት",
-          "description": "Fluffy teff-based cake paired with colorful fruits, offering a perfectly balanced, refreshing sweetness",
+          "description": "Fluffy teff-based cake paired with colorful fruits, offering a perfectly balanced, refreshing sweetness.",
           "price": 45,
           "currency": "AED",
           "image": "teff-berry-delight.png",
@@ -73,141 +490,67 @@
           "dietary": ["vegetarian"]
         },
         {
-          "id": "doro-wot",
-          "name": "Doro Wot",
-          "nameAmharic": "ዶሮ ወጥ",
-          "description": "Slow-cooked chicken stew with berbere spice, boiled eggs, and aromatic herbs",
-          "price": 50,
+          "id": "teff-cake-1kg",
+          "name": "Teff Cake 1kg",
+          "nameAmharic": "የጤፍ ኬክ 1k.g",
+          "description": "Artisanal teff cake (1kg), wholesome, rich in protein and gluten-free.",
+          "price": 150,
           "currency": "AED",
-          "image": "doro-wot.png",
+          "image": "teff-cake.png",
           "tags": ["popular"],
-          "dietary": ["gluten-free"]
+          "dietary": ["vegetarian", "gluten-free"]
         },
         {
-          "id": "beyeyanetu",
-          "name": "Beyeyanetu",
-          "nameAmharic": "በየአይነቱ",
-          "description": "A colorful vegan platter featuring assorted vegetable dishes and lentils on injera",
-          "price": 40,
-          "currency": "AED",
-          "image": "beyeyanetu.png",
-          "tags": ["popular"],
-          "dietary": ["vegan", "vegetarian"]
-        },
-        {
-          "id": "yebeg-tibs",
-          "name": "Yebeg Tibs",
-          "nameAmharic": "የበግ ጥብስ",
-          "description": "Tender lamb sautéed with rosemary, jalapeño, onions, and garlic",
-          "price": 60,
-          "currency": "AED",
-          "image": "yebeg-tibs.png",
-          "tags": ["premium"],
-          "dietary": ["gluten-free"]
-        }
-      ]
-    },
-    {
-      "id": "sides",
-      "name": "Sides & Extras",
-      "nameAmharic": "ተጨማሪ ምግቦች",
-      "description": "Perfect accompaniments to complete your Ethiopian feast",
-      "items": [
-        {
-          "id": "injera-extra",
-          "name": "Extra Injera",
-          "nameAmharic": "ተጨማሪ እንጀራ",
-          "description": "Additional serving of our signature teff-based injera bread",
-          "price": 5,
-          "currency": "AED",
-          "image": "extra-injera.png",
-          "tags": [],
-          "dietary": ["vegan"]
-        },
-        {
-          "id": "salata",
-          "name": "Ethiopian Salad",
-          "nameAmharic": "ሰላጣ",
-          "description": "Fresh tomatoes, onions, and green peppers with lemon dressing",
+          "id": "teff-cake-slice",
+          "name": "Teff Cake Slice",
+          "nameAmharic": "የጤፍ ኬክ",
+          "description": "A light and fluffy teff cake with a touch of cinnamon.",
           "price": 15,
           "currency": "AED",
-          "image": "ethiopian-salad.png",
+          "image": "teff-cake-slice.png",
           "tags": [],
-          "dietary": ["vegan", "vegetarian"]
+          "dietary": ["vegetarian", "gluten-free"]
         },
         {
-          "id": "sambusa",
-          "name": "Sambusa",
-          "nameAmharic": "ሳምቡሳ",
-          "description": "Crispy pastry filled with seasoned lentils or spiced meat",
-          "price": 12,
+          "id": "love-bite",
+          "name": "Love Bite",
+          "nameAmharic": "ላቭ ባይት",
+          "description": "A light and fluffy teff cake with a touch of cinnamon and vanilla.",
+          "price": 15,
           "currency": "AED",
-          "image": "sambusa.png",
+          "image": "love-bite.png",
           "tags": [],
-          "dietary": []
-        },
-        {
-          "id": "sambusa-2",
-          "name": "Sambusa (Meat)",
-          "nameAmharic": "የስጋ ሳምቡሳ",
-          "description": "Crispy pastry filled with spiced meat",
-          "price": 14,
-          "currency": "AED",
-          "image": "sambusa.png",
-          "tags": [],
-          "dietary": []
+          "dietary": ["vegetarian"]
         }
       ]
     },
     {
       "id": "drinks",
-      "name": "Beverages",
+      "name": "Beverages & Coffee",
       "nameAmharic": "መጠጦች",
-      "description": "Traditional Ethiopian beverages and refreshments",
+      "description": "Authentic Ethiopian coffee ceremony and refreshing drinks",
       "items": [
         {
-          "id": "buna",
-          "name": "Ethiopian Coffee (Buna)",
-          "nameAmharic": "ቡና",
-          "description": "Freshly roasted and brewed Ethiopian coffee served in a traditional ceremony style",
+          "id": "jebena-buna",
+          "name": "Coffee Pot",
+          "nameAmharic": "ጀበና ቡና",
+          "description": "Freshly brewed Ethiopian coffee served in a traditional jebena pot.",
           "price": 20,
           "currency": "AED",
+          "image": "jebena-buna.png",
+          "tags": ["signature", "popular"],
+          "dietary": ["vegan", "vegetarian"]
+        },
+        {
+          "id": "buna",
+          "name": "Coffee Sini",
+          "nameAmharic": "ቡና በሲኒ",
+          "description": "Traditional Ethiopian coffee served in a small cup (sini).",
+          "price": 5,
+          "currency": "AED",
           "image": "buna.png",
-          "tags": ["signature"],
-          "dietary": ["vegan"]
-        },
-        {
-          "id": "tej",
-          "name": "Tej (Honey Wine)",
-          "nameAmharic": "ጠጅ",
-          "description": "Traditional Ethiopian honey wine with a delicate sweet taste",
-          "price": 25,
-          "currency": "AED",
-          "image": "tej.png",
-          "tags": [],
-          "dietary": ["vegetarian"]
-        },
-        {
-          "id": "fresh-juice",
-          "name": "Spris (Mixed Juice)",
-          "nameAmharic": "ስፕሪስ",
-          "description": "Layered fresh fruit juice blend — mango, avocado, and papaya",
-          "price": 18,
-          "currency": "AED",
-          "image": "spris.png",
           "tags": ["popular"],
-          "dietary": ["vegan"]
-        },
-        {
-          "id": "fresh-juice-2",
-          "name": "Mango Juice",
-          "nameAmharic": "የማንጎ ጭማቂ",
-          "description": "Freshly squeezed mango juice",
-          "price": 15,
-          "currency": "AED",
-          "image": "spris.png",
-          "tags": [],
-          "dietary": ["vegan"]
+          "dietary": ["vegan", "vegetarian"]
         }
       ]
     }

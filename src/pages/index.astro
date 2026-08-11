@@ -4,21 +4,14 @@ import menuData from '../data/menu.json';
 import reviewsData from '../data/reviews.json';
 import { Image } from 'astro:assets';
 
-import loveGrassSpecialImg from '../assets/food/love-grass-special.png';
-import specialKitfoImg from '../assets/food/special-kitfo.png';
-import maheberawiImg from '../assets/food/maheberawi.png';
-import derekTibsImg from '../assets/food/derek-tibs.png';
-import teffCakeImg from '../assets/food/teff-cake.png';
-import teffBerryDelightImg from '../assets/food/teff-berry-delight.png';
-
-const foodImages: Record<string, ImageMetadata> = {
-  'love-grass-special.png': loveGrassSpecialImg,
-  'special-kitfo.png': specialKitfoImg,
-  'maheberawi.png': maheberawiImg,
-  'derek-tibs.png': derekTibsImg,
-  'teff-cake.png': teffCakeImg,
-  'teff-berry-delight.png': teffBerryDelightImg,
-};
+const rawFoodImages = import.meta.glob<{ default: ImageMetadata }>('../assets/food/*.png', { eager: true });
+const foodImages: Record<string, ImageMetadata> = {};
+for (const path in rawFoodImages) {
+  const filename = path.split('/').pop();
+  if (filename) {
+    foodImages[filename] = rawFoodImages[path].default;
+  }
+}
 
 import atmosphere1Poster from '../assets/atmosphere/posters/atmosphere-1.webp';
 import atmosphere2Poster from '../assets/atmosphere/posters/atmosphere-2.webp';
@@ -66,16 +59,9 @@ const atmosphereItems = [
   },
 ];
 
-/* Compute aggregate rating for schema */
-const allRatings = reviewsData.map(r => r.rating);
-const avgRating = (allRatings.reduce((a, b) => a + b, 0) / allRatings.length).toFixed(1);
-
-const reviewDateFormatter = new Intl.DateTimeFormat('en-US', {
-  day: 'numeric',
-  month: 'short',
-  year: 'numeric',
-  timeZone: 'UTC',
-});
+/* Current Google Business Profile rating; review cards below are a featured subset. */
+const googleRating = 4.8;
+const googleReviewCount = 166;
 
 const getReviewerInitials = (name: string) => name
   .split(/\s+/)
@@ -91,17 +77,17 @@ const aggregateRatingSchema = {
   "name": "Love Grass Restaurant",
   "aggregateRating": {
     "@type": "AggregateRating",
-    "ratingValue": avgRating,
+    "ratingValue": String(googleRating),
     "bestRating": "5",
     "worstRating": "1",
-    "ratingCount": String(allRatings.length)
+    "ratingCount": String(googleReviewCount)
   }
 };
 
-/* Featured items (tagged as 'popular' or 'signature') */
+/* Signature items (spanning all dish categories) */
 const featuredItems = menuData.sections
   .flatMap(s => s.items)
-  .filter(item => item.tags.includes('popular') || item.tags.includes('signature'))
+  .filter(item => item.tags.includes('signature'))
   .slice(0, 6);
 
 /* Star SVG helper */
@@ -322,7 +308,7 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
           </p>
         </div>
 
-        <div class="reviews-rating" role="img" aria-label={`Rated ${avgRating} out of 5, based on ${reviewsData.length} featured reviews`}>
+        <div class="reviews-rating" role="img" aria-label={`Rated ${googleRating} out of 5, based on ${googleReviewCount} Google reviews`}>
           <div class="reviews-rating__source">
             <svg width="20" height="20" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"></path>
@@ -333,13 +319,13 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
             <span>Google reviews</span>
           </div>
           <div class="reviews-rating__summary">
-            <span class="reviews-avg">{avgRating}</span>
+            <span class="reviews-avg">{googleRating}</span>
             <span class="reviews-rating__out-of">/ 5</span>
           </div>
           <div class="reviews-stars" aria-hidden="true">
             {Array.from({ length: 5 }).map(() => <Fragment set:html={starSVG} />)}
           </div>
-          <p>Based on {reviewsData.length} featured reviews</p>
+          <p>Based on {googleReviewCount} Google reviews</p>
         </div>
 
       </aside>
@@ -373,7 +359,11 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
                   <Fragment set:html={starSVG} />
                 ))}
               </div>
-              <blockquote class="review-card__text">
+              <blockquote
+                class="review-card__text"
+                tabindex="0"
+                aria-label={`Full review by ${review.author}`}
+              >
                 <p>{review.text}</p>
               </blockquote>
               <footer class="review-card__footer">
@@ -383,9 +373,6 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
                   </span>
                   <div>
                     <cite class="review-card__author">{review.author}</cite>
-                    <time class="review-card__date" datetime={review.date}>
-                      {reviewDateFormatter.format(new Date(review.date))}
-                    </time>
                   </div>
                 </div>
                 <span class="review-card__source">
@@ -1897,7 +1884,7 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
 
   .review-card {
     position: relative;
-    min-height: 21rem;
+    height: 21rem;
     overflow: hidden;
     padding: var(--space-5) var(--space-4) var(--space-4);
     display: flex;
@@ -1953,6 +1940,31 @@ const starSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--col
     position: relative;
     z-index: 1;
     flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    padding-right: var(--space-2);
+    scrollbar-color: rgba(255, 255, 255, 0.6) rgba(255, 255, 255, 0.12);
+    scrollbar-width: thin;
+  }
+
+  .review-card__text:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.9);
+    outline-offset: 3px;
+  }
+
+  .review-card__text::-webkit-scrollbar {
+    width: 0.35rem;
+  }
+
+  .review-card__text::-webkit-scrollbar-track {
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .review-card__text::-webkit-scrollbar-thumb {
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.6);
   }
 
   .review-card__text p {
