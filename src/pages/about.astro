@@ -31,12 +31,12 @@ const breadcrumbSchema = {
 const getIcon = (paths) => `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 
 const teffFacts = [
-  { icon: getIcon('<circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'), title: "5,000+ Years Old", desc: "Teff is one of the oldest cultivated grains, originating in the Ethiopian Highlands." },
-  { icon: getIcon('<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>'), title: "High in Protein", desc: "Contains all 8 essential amino acids, making it a complete protein source." },
-  { icon: getIcon('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'), title: "Rich in Calcium", desc: "Contains more calcium per serving than most other grains — great for bone health." },
-  { icon: getIcon('<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>'), title: "Naturally Gluten-Free", desc: "Safe for celiac and gluten-sensitive diets, with no compromise on taste." },
-  { icon: getIcon('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'), title: "Iron Powerhouse", desc: "Exceptionally high in iron, traditionally used to combat anemia in Ethiopia." },
-  { icon: getIcon('<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>'), title: "Low Glycemic Index", desc: "Digests slowly, providing sustained energy without blood sugar spikes." },
+  { icon: getIcon('<circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'), title: "Ancient Grain", desc: "One of the very first plants cultivated by humans, beginning in the east coast of Africa as early as 4000 BC." },
+  { icon: getIcon('<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>'), title: "High Protein & Fiber", desc: "Teff flour is 12.2% fiber and contains all amino acids humans need, making it a perfect plant-based source of protein available." },
+  { icon: getIcon('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'), title: "High Mineral Content", desc: "Rich in iron and manganese, and also contains phosphorous, magnesium, calcium, zinc, sodium and potassium." },
+  { icon: getIcon('<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>'), title: "Naturally Gluten Free", desc: "Safe for people with celiac disease and gentle on digestive systems." },
+  { icon: getIcon('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'), title: "Blood Sugar Control", desc: "Has a lower glycemic index (GI) than wheat products, helping to regulate insulin and blood sugar fluctuations." },
+  { icon: getIcon('<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>'), title: "Culinary Versatility", desc: "Apart from its use in injera, you can make bread, biscuits, pancakes, and muffins." },
 ];
 ---
 
@@ -50,6 +50,10 @@ const teffFacts = [
   <section class="about-hero" aria-label="About Love Grass Restaurant">
     <div class="about-hero__overlay"></div>
     <div class="about-hero__content container">
+      <a href="/" class="back-btn hero-animate" aria-label="Back to Home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span>Back to Home</span>
+      </a>
       <p class="section-label hero-animate" style="color: var(--color-accent-light);">Our Story</p>
       <h1 class="about-hero__title hero-animate hero-animate--delay-1">About Love Grass</h1>
       <p class="about-hero__subtitle hero-animate hero-animate--delay-2">
@@ -69,20 +73,19 @@ const teffFacts = [
 
       <div class="story-content" data-reveal>
         <p>
-          Love Grass Restaurant was born from a deep love for <em>teff</em> — the tiny grain that forms the
-          heart and soul of Ethiopian cuisine. Our name pays homage to this remarkable grass that has
-          nourished Ethiopian communities for over 5,000 years.
+          Inspired by the traditional African “love grass” <em>Eragrostis tef</em>, that has supported communities for over 5,000 years, our restaurant serves up the soulful and vibrant flavors of Ethiopia to the heart of the UAE.
         </p>
         <p>
-          Every day, our kitchen transforms this ancient grain into fresh, spongy injera — the iconic
-          fermented flatbread that serves as both plate and utensil in Ethiopian dining. It's more than
-          food; it's a tradition of communal eating, where family and friends gather around a shared platter.
+          What makes us stand out is our commitment to the craft of real Injera. Modern shortcuts may combine grains, but our kitchen bakes 100% pure Teff Injera fresh daily. Our signature sourdough flatbread is naturally gluten free, nutrient dense and preservative free — the perfect canvas for our rich culinary heritage.
         </p>
         <p>
-          Located in Dubai, we bring the authentic flavors of Ethiopia to the UAE. Our recipes are
-          passed down through generations, prepared with the same love and care as a home-cooked
-          Ethiopian meal. From our signature Tibs to the rich, slow-cooked Doro Wot, every dish
-          tells a story of heritage and passion.
+          Our menu celebrates diversity and inclusion, offering something for every palate. From traditional meat stews like Doro Wot and Tibs, to our vegan fasting platters (Beyaynetu), we prepare each dish with clean, wholesome ingredients and recipes passed down through generations.
+        </p>
+        <p>
+          At Love Grass, our love for Teff goes beyond our signature Injera and savory dishes. We also make innovative fine desserts with Teff as the main ingredient, giving a modern twist to this ancient Ethiopian grain. Our desserts include <strong>Teff Cake</strong> and <strong>Teff Berry Delight</strong> (a fluffy Teff based cake with colorful fruits that give a perfectly balanced and refreshing sweetness), <strong>Teff Cake Slice</strong> (a light and fluffy Teff cake with a hint of cinnamon), and <strong>Love Bite</strong> (a light and fluffy Teff cake with a hint of cinnamon and vanilla).
+        </p>
+        <p>
+          Love Grass is more than a meal, it’s an invitation to connect. Our guests gather around a beautiful colorful shared platter to experience the ancient tradition of communal eating where food is broken together, stories are shared and every guest is treated like family. Come into our home in Abu Hail and experience a cleaner, healthier and truly authentic taste of Ethiopia.
         </p>
       </div>
     </div>
@@ -116,24 +119,23 @@ const teffFacts = [
           </div>
         </a>
 
-        <article class="blog-card card" data-reveal data-reveal-delay="2">
+        <a href="/art-of-making-injera" class="blog-card card" data-reveal data-reveal-delay="2" style="text-decoration: none; color: inherit; display: block;">
           <div class="blog-card__img">
             <div class="blog-card__placeholder">
               <span>🌾</span>
             </div>
           </div>
           <div class="blog-card__body">
-            <span class="blog-card__tag">Culture</span>
-            <h3 class="blog-card__title">The Art of Making Injera: A Centuries-Old Tradition</h3>
+            <span class="blog-card__tag">Tradition</span>
+            <h3 class="blog-card__title">The Art of Making Injera</h3>
             <p class="blog-card__excerpt">
-              Discover the fascinating fermentation process behind Ethiopia's iconic flatbread
-              and why it takes three days to make the perfect injera...
+              Discover the traditional fermentation process behind Ethiopia's iconic flatbread and how pure teff flour is crafted into spongy injera...
             </p>
-            <span class="blog-card__date">Coming Soon</span>
+            <span class="blog-card__date" style="color: var(--color-primary); font-weight: 600;">Learn the Craft &rarr;</span>
           </div>
-        </article>
+        </a>
 
-        <article class="blog-card card" data-reveal data-reveal-delay="3">
+        <a href="/ethiopian-coffee-ceremony" class="blog-card card" data-reveal data-reveal-delay="3" style="text-decoration: none; color: inherit; display: block;">
           <div class="blog-card__img">
             <div class="blog-card__placeholder">
               <span>☕</span>
@@ -141,14 +143,13 @@ const teffFacts = [
           </div>
           <div class="blog-card__body">
             <span class="blog-card__tag">Heritage</span>
-            <h3 class="blog-card__title">The Ethiopian Coffee Ceremony: More Than Just a Drink</h3>
+            <h3 class="blog-card__title">The Ethiopian Coffee Ceremony</h3>
             <p class="blog-card__excerpt">
-              From roasting green beans to three rounds of buna — learn about the beautiful
-              ritual that connects Ethiopian communities...
+              From washing green beans and roasting over charcoal to three rounds of Buna (Abol, Tona, Baraka) — experience Ethiopia's ritual of connection...
             </p>
-            <span class="blog-card__date">Coming Soon</span>
+            <span class="blog-card__date" style="color: var(--color-primary); font-weight: 600;">Explore the Ritual &rarr;</span>
           </div>
-        </article>
+        </a>
       </div>
     </div>
   </section>

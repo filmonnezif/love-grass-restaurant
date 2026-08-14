@@ -234,3 +234,45 @@
   font-weight: 500;
   color: var(--color-text-muted);
 }
+
+/* ---------- Back Button ---------- */
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--color-text-inverse);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-decoration: none;
+  margin-bottom: var(--space-4);
+  width: fit-content;
+  transition:
+    background-color var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out),
+    color var(--duration-normal) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: var(--color-accent-light);
+  color: var(--color-accent-light);
+  transform: translateX(-4px);
+}
+
+.back-btn svg {
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.back-btn:hover svg {
+  transform: translateX(-2px);
+}
+

@@ -1,0 +1,307 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://love-grass.com/" },
+    { "@type": "ListItem", "position": 2, "name": "About Us", "item": "https://love-grass.com/about" },
+    { "@type": "ListItem", "position": 3, "name": "The Art of Making Injera", "item": "https://love-grass.com/art-of-making-injera" }
+  ]
+};
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Art of Making Injera: The Traditional 3-Day Process",
+  "description": "Discover how pure Teff flour is fermented and baked into authentic Ethiopian sourdough flatbread through a traditional 3 to 5 day process.",
+  "author": {
+    "@type": "Organization",
+    "name": "Love Grass Restaurant"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Love Grass Restaurant",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://love-grass.com/images/logo.webp"
+    }
+  }
+};
+
+const steps = [
+  {
+    step: "01",
+    day: "Day 1",
+    title: "Feeding the Starter (Ersho) & Preparing Batter",
+    amharic: "እርሾ ማዘጋጀት",
+    desc: "Pure Teff flour is mixed with water to make a smooth batter. A liquid starter saved from previous batches (Ersho) is added, and the mixture is left to rest in a warm place. Over the initial days, beneficial wild microorganisms multiply, causing the batter to rise, bubble, and begin developing its signature tangy taste."
+  },
+  {
+    step: "02",
+    day: "Days 2 & 3",
+    title: "Fermenting & Cooking the Absit Porridge",
+    amharic: "አብሲት ማፍላት",
+    desc: "Since Teff is 100% naturally gluten-free, the batter needs help holding its structure on the griddle. To fix this, a small portion of the fermented liquid is cooked with boiling water into a thin porridge called absit. Once cooled, it is folded back into the fermented dough, unlocking the essential elasticity and spongy texture needed for perfect Injera."
+  },
+  {
+    step: "03",
+    day: "Day 4",
+    title: "Heating the Clay Griddle (Mitad)",
+    amharic: "ምጣድ ማሞቅ",
+    desc: "Baking requires a mitad — a heavy earthenware disc that has been seasoned with oils and seeds over many years until its surface is jet-black and silky smooth. A steady fire is stoked beneath it until the clay reaches high heat, and the surface is wiped clean just before pouring."
+  },
+  {
+    step: "04",
+    day: "Day 4",
+    title: "Pouring the Continuous Spiral",
+    amharic: "በስፒራል ማፍሰስ",
+    desc: "The cook pours the thin batter from a pitcher onto the hot clay stone, moving in a smooth, continuous spiral from the outer rim inward toward the center. The batter bubbles instantly as it touches the heat, and a heavy straw lid (akenbalo) is placed over the griddle to trap the steam."
+  },
+  {
+    step: "05",
+    day: "Day 5",
+    title: "Watching the Eyes Form, Cooling & Serving",
+    amharic: "ዓይን እና ማቀዝቀዝ",
+    desc: "Trapped steam cooks the batter from above, opening thousands of tiny craters across the surface known as 'eyes' — the ultimate hallmark of authentic, well-fermented Injera. The bread is peeled gently using a woven straw mat, allowed to cool, and served as the foundation for communal Ethiopian dining."
+  }
+];
+---
+
+<BaseLayout
+  title="The Art of Making Injera | Love Grass Restaurant"
+  description="Discover how pure Teff flour is fermented and baked into authentic Ethiopian sourdough flatbread through a traditional 3 to 5 day process."
+  schema={[articleSchema, breadcrumbSchema]}
+>
+
+  <!-- ========== HERO HEADER ========== -->
+  <section class="injera-hero" aria-label="The Art of Making Injera">
+    <div class="injera-hero__overlay"></div>
+    <div class="injera-hero__content container text-center">
+      <a href="/about" class="back-btn hero-animate" aria-label="Back to About Us" style="margin-inline: auto;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span>Back to About Us</span>
+      </a>
+      <p class="section-label hero-animate" style="color: var(--color-accent-light);">Centuries-Old Craft</p>
+      <h1 class="injera-hero__title hero-animate hero-animate--delay-1">The Art of Making Injera</h1>
+      <p class="injera-hero__subtitle hero-animate hero-animate--delay-2">
+        How to Make Injera: The Traditional 3 to 5 Day Fermentation Process
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== INTRO & QUOTE ========== -->
+  <section class="section intro-section">
+    <div class="container container--narrow text-center">
+      <div data-reveal>
+        <p class="section-label">Culinary Heritage</p>
+        <h2 class="section-title">Pure Teff, Time & Passion</h2>
+        <hr class="divider" style="margin-inline: auto;" />
+      </div>
+
+      <blockquote class="quote-box" data-reveal>
+        <p class="quote-text">
+          “Three days, one age-old tradition, countless generations of Ethiopian culinary heritage in each Injera.”
+        </p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ========== STEPS PROCESS ========== -->
+  <section class="section steps-section">
+    <div class="container">
+      <div class="steps-grid">
+        {steps.map((item, index) => (
+          <div class="step-card card" data-reveal data-reveal-delay={String(Math.min(index + 1, 5))}>
+            <div class="step-card__header">
+              <span class="step-badge">{item.step}</span>
+              <span class="day-badge">{item.day}</span>
+            </div>
+            <div class="step-card__body">
+              <p lang="am" class="step-card__amharic">{item.amharic}</p>
+              <h3 class="step-card__title">{item.title}</h3>
+              <p class="step-card__desc">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA ========== -->
+  <section class="section cta-section" aria-label="Taste real teff injera">
+    <div class="container text-center" data-reveal>
+      <h2 class="cta-section__title">Taste Real 100% Teff Injera</h2>
+      <p class="cta-section__subtitle">
+        Visit Love Grass Restaurant in Abu Hail, Dubai and break bread with family and friends.
+      </p>
+      <a href="/menu" class="btn btn--accent btn--lg pulse">
+        Explore Our Menu
+      </a>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ========== HERO ========== */
+  .injera-hero {
+    position: relative;
+    padding-block: calc(var(--header-height) + var(--space-6)) var(--space-6);
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+    color: var(--color-text-inverse);
+  }
+
+  .injera-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(212, 148, 58, 0.15), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05), transparent 40%);
+  }
+
+  .injera-hero__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .injera-hero__title {
+    font-size: var(--text-5xl);
+    color: var(--color-text-inverse);
+    margin-bottom: var(--space-3);
+  }
+
+  .injera-hero__subtitle {
+    font-size: var(--text-lg);
+    opacity: 0.9;
+    max-width: 55ch;
+    margin-inline: auto;
+  }
+
+  /* ========== QUOTE BOX ========== */
+  .quote-box {
+    margin-top: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--color-primary-50);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-md);
+  }
+
+  .quote-text {
+    font-family: var(--font-accent);
+    font-size: var(--text-xl);
+    font-style: italic;
+    color: var(--color-primary-dark);
+    line-height: 1.6;
+  }
+
+  /* ========== STEPS GRID ========== */
+  .steps-section {
+    background-color: var(--color-surface-alt);
+  }
+
+  .steps-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .steps-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .step-card {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    transition: transform var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
+  }
+
+  .step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .step-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .step-badge {
+    font-family: var(--font-heading);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-primary);
+    background-color: var(--color-primary-50);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+  }
+
+  .day-badge {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-accent);
+    background-color: rgba(212, 148, 58, 0.12);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .step-card__amharic {
+    font-size: var(--text-sm);
+    color: var(--color-primary-dark);
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+  }
+
+  .step-card__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .step-card__desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  /* ========== CTA ========== */
+  .cta-section {
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+    color: var(--color-text-inverse);
+  }
+
+  .cta-section__title {
+    font-size: var(--text-4xl);
+    color: var(--color-text-inverse);
+    margin-bottom: var(--space-3);
+  }
+
+  .cta-section__subtitle {
+    font-size: var(--text-lg);
+    opacity: 0.9;
+    max-width: 50ch;
+    margin-inline: auto;
+    margin-bottom: var(--space-5);
+  }
+</style>
